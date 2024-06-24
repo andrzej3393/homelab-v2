@@ -1,0 +1,29 @@
+name: Ansible Lint
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Ansible Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install ansible-lint
+        run: |
+          python3 -m pip install --upgrade pip
+          pip3 install -r ansible/requirements.txt
+
+      - name: Install Galaxy modules
+        run: |
+          ansible-galaxy install -r ansible/requirements.yml
+
+      - name: Run ansible-lint
+        run: ansible-lint
+        working-directory: ansible

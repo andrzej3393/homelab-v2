@@ -1,0 +1,17 @@
+ansible:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "ansible/**/*"
+flux:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "flux/**/*"
+docs:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "docs/**/*"
+          - "**/*.md"
+actions:
+  - changed-files:
+      - any-glob-to-any-file:
+          - ".github/workflows/*"
