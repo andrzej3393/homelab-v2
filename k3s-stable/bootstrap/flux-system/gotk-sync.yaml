@@ -8,10 +8,10 @@ metadata:
 spec:
   interval: 1m0s
   ref:
-    branch: main
+    branch: master
   secretRef:
     name: flux-system
-  url: ssh://git@github.com/andrzej3393/homelab
+  url: ssh://git@github.com/andrzej3393/homelab-v2
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -20,7 +20,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./flux/bootstrap
+  path: ./k3s-stable/bootstrap
   prune: true
   sourceRef:
     kind: GitRepository
