@@ -99,8 +99,8 @@ spec:
         existingClaim: qbittorrent
       media:
         type: nfs
-        server: 10.93.82.10
-        path: /mnt/HDD-Pool/media
+        server: "nfs.nas.${HOMELAB_DOMAIN}"
+        path: /mnt/hdd/media
         globalMounts:
           - path: /downloads
             subPath: torrents
