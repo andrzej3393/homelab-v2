@@ -59,77 +59,26 @@ spec:
                     - template: "{{ states('sensor.rack_thermometer_humidity', rounded=False, with_unit=True) }}"
                       label: "Rack humidity"
         - Monitoring:
-            - Sentry:
-                icon: sentry
-                href: https://andrzejgorski.sentry.io/
             - Healthchecks.io:
                 icon: healthchecks
                 href: https://healthchecks.io/
         - Hypervisors:
-            - Proxmox Cintra:
+            - Proxmox:
                 icon: proxmox
-                href: https://cintra.${HOMELAB_DOMAIN}:8006/
-                ping: https://cintra.${HOMELAB_DOMAIN}:8006/
+                href: https://proxmox.${HOMELAB_DOMAIN}:8006/
+                ping: https://proxmox.${HOMELAB_DOMAIN}:8006/
                 widget:
                   type: proxmox
-                  url: https://cintra.${HOMELAB_DOMAIN}:8006
+                  url: https://proxmox.${HOMELAB_DOMAIN}:8006
                   username: "${PROXMOX_HOMEPAGE_API_TOKEN_ID}"
                   password: "${PROXMOX_HOMEPAGE_API_SECRET}"
-                  node: cintra
-                  fields: ["resources.cpu", "resources.mem"]
-            - Proxmox Novigrad:
-                icon: proxmox
-                href: https://novigrad.${HOMELAB_DOMAIN}:8006/
-                ping: https://novigrad.${HOMELAB_DOMAIN}:8006/
-                widget:
-                  type: proxmox
-                  url: https://novigrad.${HOMELAB_DOMAIN}:8006
-                  username: "${PROXMOX_HOMEPAGE_API_TOKEN_ID}"
-                  password: "${PROXMOX_HOMEPAGE_API_SECRET}"
-                  node: novigrad
-                  fields: ["resources.cpu", "resources.mem"]
-            - Proxmox Oxenfurt:
-                icon: proxmox
-                href: https://oxenfurt.${HOMELAB_DOMAIN}:8006/
-                ping: https://oxenfurt.${HOMELAB_DOMAIN}:8006/
-                widget:
-                  type: proxmox
-                  url: https://oxenfurt.${HOMELAB_DOMAIN}:8006
-                  username: "${PROXMOX_HOMEPAGE_API_TOKEN_ID}"
-                  password: "${PROXMOX_HOMEPAGE_API_SECRET}"
-                  node: oxenfurt
-                  fields: ["resources.cpu", "resources.mem"]
-            - Proxmox Rivia:
-                icon: proxmox
-                href: https://rivia.${HOMELAB_DOMAIN}:8006/
-                ping: https://rivia.${HOMELAB_DOMAIN}:8006/
-                widget:
-                  type: proxmox
-                  url: https://oxenfurt.${HOMELAB_DOMAIN}:8006
-                  username: "${PROXMOX_HOMEPAGE_API_TOKEN_ID}"
-                  password: "${PROXMOX_HOMEPAGE_API_SECRET}"
-                  node: oxenfurt
-                  fields: ["resources.cpu", "resources.mem"]
-            - Proxmox Vengerberg:
-                icon: proxmox
-                href: https://vengerberg.${HOMELAB_DOMAIN}:8006/
-                ping: https://vengerberg.${HOMELAB_DOMAIN}:8006/
-                widget:
-                  type: proxmox
-                  url: https://vengerberg.${HOMELAB_DOMAIN}:8006
-                  username: "${PROXMOX_HOMEPAGE_API_TOKEN_ID}"
-                  password: "${PROXMOX_HOMEPAGE_API_SECRET}"
-                  node: vengerberg
+                  node: proxmox
                   fields: ["resources.cpu", "resources.mem"]
         - IPMI:
-            - PiKVM:
-                icon: pikvm
-                href: https://pikvm.${HOMELAB_DOMAIN}/
-                ping: https://pikvm.${HOMELAB_DOMAIN}/
-            - Microserver iLO:
-                icon: ilo
-                href: https://ilo.${HOMELAB_DOMAIN}/
-                ping: https://ilo.${HOMELAB_DOMAIN}/
+            - Supermicro BMC:
+                icon: supermicro
+                href: https://bmc.${HOMELAB_DOMAIN}/
+                ping: https://bmc.${HOMELAB_DOMAIN}/
         - Networking:
             - OPNsense:
                 icon: opnsense
@@ -149,15 +98,6 @@ spec:
                 href: https://ap.${HOMELAB_DOMAIN}/
                 ping: https://ap.${HOMELAB_DOMAIN}/
         - Storage:
-            - TrueNAS:
-                icon: truenas
-                href: https://truenas.${HOMELAB_DOMAIN}/
-                ping: https://truenas.${HOMELAB_DOMAIN}/
-                widget:
-                  type: truenas
-                  url: https://truenas.${HOMELAB_DOMAIN}/
-                  key: "${TRUENAS_API_KEY}"
-                  enablePools: true
       widgets:
         - kubernetes:
             cluster:
