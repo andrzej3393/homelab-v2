@@ -25,4 +25,4 @@ spec:
     keepHistory: false
   values:
     controller:
-      replicas: 2
+      replicas: 1
