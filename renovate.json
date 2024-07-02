@@ -14,17 +14,17 @@
     "fileMatch": ["^ansible/requirements\\.ya?ml$"]
   },
   "flux": {
-    "fileMatch": ["^flux/.*\\.ya?ml$"]
+    "fileMatch": ["^k3s-stable/.*\\.ya?ml$"]
   },
   "helm-values": {
-    "fileMatch": ["^flux/.*\\.ya?ml$"]
+    "fileMatch": ["^k3s-stable/.*\\.ya?ml$"]
   },
   "regexManagers": [
     {
       "description": "Process custom dependencies",
       "fileMatch": [
         "(^|/)ansible/.+\\.ya?ml(\\.j2)?$",
-        "(^|/)kubernetes/.+\\.ya?ml(\\.j2)?$"
+        "(^|/)k3s-stable/.+\\.ya?ml(\\.j2)?$"
       ],
       "matchStrings": [
         "datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)( versioning=(?<versioning>\\S+))?\n.*?\"(?<currentValue>.*)\"\n",
