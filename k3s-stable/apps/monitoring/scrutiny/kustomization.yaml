@@ -5,7 +5,7 @@ metadata:
   name: scrutiny
   namespace: flux-system
 spec:
-  path: ./flux/apps/monitoring/scrutiny/app
+  path: ./k3s-stable/apps/monitoring/scrutiny/app
   sourceRef:
     kind: GitRepository
     name: flux-system

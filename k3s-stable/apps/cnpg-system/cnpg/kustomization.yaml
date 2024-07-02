@@ -5,7 +5,7 @@ metadata:
   name: cnpg
   namespace: flux-system
 spec:
-  path: ./flux/apps/cnpg-system/cnpg/app
+  path: ./k3s-stable/apps/cnpg-system/cnpg/app
   sourceRef:
     kind: GitRepository
     name: flux-system

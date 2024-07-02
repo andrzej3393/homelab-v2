@@ -5,7 +5,7 @@ metadata:
   name: external-secrets
   namespace: flux-system
 spec:
-  path: ./flux/core/external-secrets/external-secrets/app
+  path: ./k3s-stable/core/external-secrets/external-secrets/app
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -23,7 +23,7 @@ metadata:
   name: external-secrets-op-store
   namespace: flux-system
 spec:
-  path: ./flux/core/external-secrets/external-secrets/op-store
+  path: ./k3s-stable/core/external-secrets/external-secrets/op-store
   sourceRef:
     kind: GitRepository
     name: flux-system

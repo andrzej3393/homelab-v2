@@ -5,7 +5,7 @@ metadata:
   name: cert-manager-app
   namespace: flux-system
 spec:
-  path: ./flux/core/cert-manager/cert-manager/app
+  path: ./k3s-stable/core/cert-manager/cert-manager/app
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -23,7 +23,7 @@ metadata:
   name: cert-manager-issuers
   namespace: flux-system
 spec:
-  path: ./flux/core/cert-manager/cert-manager/issuers
+  path: ./k3s-stable/core/cert-manager/cert-manager/issuers
   sourceRef:
     kind: GitRepository
     name: flux-system

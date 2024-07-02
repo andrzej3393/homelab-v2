@@ -5,7 +5,7 @@ metadata:
   name: notifications
   namespace: flux-system
 spec:
-  path: ./flux/core/flux-system/notifications/notifications
+  path: ./k3s-stable/core/flux-system/notifications/notifications
   sourceRef:
     kind: GitRepository
     name: flux-system

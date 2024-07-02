@@ -5,7 +5,7 @@ metadata:
   name: speedtest-db
   namespace: flux-system
 spec:
-  path: ./flux/apps/monitoring/speedtest/db
+  path: ./k3s-stable/apps/monitoring/speedtest/db
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -23,7 +23,7 @@ metadata:
   name: speedtest
   namespace: flux-system
 spec:
-  path: ./flux/apps/monitoring/speedtest/app
+  path: ./k3s-stable/apps/monitoring/speedtest/app
   sourceRef:
     kind: GitRepository
     name: flux-system

@@ -5,7 +5,7 @@ metadata:
   name: nfd
   namespace: flux-system
 spec:
-  path: ./flux/core/kube-system/nfd/app
+  path: ./k3s-stable/core/kube-system/nfd/app
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -21,7 +21,7 @@ metadata:
   name: nfd-rules
   namespace: flux-system
 spec:
-  path: ./flux/core/kube-system/nfd/rules
+  path: ./k3s-stable/core/kube-system/nfd/rules
   sourceRef:
     kind: GitRepository
     name: flux-system

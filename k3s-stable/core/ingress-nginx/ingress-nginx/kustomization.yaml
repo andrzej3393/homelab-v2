@@ -5,7 +5,7 @@ metadata:
   name: ingress-nginx
   namespace: flux-system
 spec:
-  path: ./flux/core/ingress-nginx/ingress-nginx/app
+  path: ./k3s-stable/core/ingress-nginx/ingress-nginx/app
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -25,7 +25,7 @@ metadata:
   name: tls-certs
   namespace: flux-system
 spec:
-  path: ./flux/core/ingress-nginx/ingress-nginx/certificates
+  path: ./k3s-stable/core/ingress-nginx/ingress-nginx/certificates
   sourceRef:
     kind: GitRepository
     name: flux-system

@@ -5,7 +5,7 @@ metadata:
   name: pve-exporter
   namespace: flux-system
 spec:
-  path: ./flux/apps/monitoring/pve-exporter/app
+  path: ./k3s-stable/apps/monitoring/pve-exporter/app
   sourceRef:
     kind: GitRepository
     name: flux-system

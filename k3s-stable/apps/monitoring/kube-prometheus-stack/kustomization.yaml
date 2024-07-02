@@ -5,7 +5,7 @@ metadata:
   name: kube-prometheus-stack
   namespace: flux-system
 spec:
-  path: ./flux/apps/monitoring/kube-prometheus-stack/app
+  path: ./k3s-stable/apps/monitoring/kube-prometheus-stack/app
   sourceRef:
     kind: GitRepository
     name: flux-system

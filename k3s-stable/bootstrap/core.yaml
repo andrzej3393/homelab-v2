@@ -6,7 +6,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  path: ./flux/core
+  path: ./k3s-stable/core
   prune: true
   sourceRef:
     kind: GitRepository

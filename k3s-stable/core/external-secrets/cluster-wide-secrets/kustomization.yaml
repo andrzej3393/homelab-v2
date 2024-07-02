@@ -4,7 +4,7 @@ metadata:
   name: cluster-wide-secrets
   namespace: flux-system
 spec:
-  path: ./flux/core/external-secrets/cluster-wide-secrets/secrets
+  path: ./k3s-stable/core/external-secrets/cluster-wide-secrets/secrets
   sourceRef:
     kind: GitRepository
     name: flux-system

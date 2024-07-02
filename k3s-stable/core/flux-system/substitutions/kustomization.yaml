@@ -5,7 +5,7 @@ metadata:
   name: cluster-config
   namespace: flux-system
 spec:
-  path: ./flux/core/flux-system/substitutions/secrets
+  path: ./k3s-stable/core/flux-system/substitutions/secrets
   sourceRef:
     kind: GitRepository
     name: flux-system

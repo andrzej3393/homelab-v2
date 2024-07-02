@@ -5,7 +5,7 @@ metadata:
   name: healthchecks-io
   namespace: flux-system
 spec:
-  path: ./flux/apps/monitoring/healthchecks_io/cronjobs
+  path: ./k3s-stable/apps/monitoring/healthchecks_io/cronjobs
   sourceRef:
     kind: GitRepository
     name: flux-system

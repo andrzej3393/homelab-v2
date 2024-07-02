@@ -5,7 +5,7 @@ metadata:
   name: metallb-helm-release
   namespace: flux-system
 spec:
-  path: ./flux/core/metallb-system/metallb/helm
+  path: ./k3s-stable/core/metallb-system/metallb/helm
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -21,7 +21,7 @@ metadata:
   name: metallb-crs
   namespace: flux-system
 spec:
-  path: ./flux/core/metallb-system/metallb/crs
+  path: ./k3s-stable/core/metallb-system/metallb/crs
   sourceRef:
     kind: GitRepository
     name: flux-system

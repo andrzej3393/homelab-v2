@@ -5,7 +5,7 @@ metadata:
   name: mikrotik-exporter
   namespace: flux-system
 spec:
-  path: ./flux/apps/monitoring/mikrotik-exporter/app
+  path: ./k3s-stable/apps/monitoring/mikrotik-exporter/app
   sourceRef:
     kind: GitRepository
     name: flux-system

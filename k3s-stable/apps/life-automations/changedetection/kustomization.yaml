@@ -5,7 +5,7 @@ metadata:
   name: playwright-chrome
   namespace: flux-system
 spec:
-  path: ./flux/apps/life-automations/changedetection/playwright
+  path: ./k3s-stable/apps/life-automations/changedetection/playwright
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -21,7 +21,7 @@ metadata:
   name: changedetection
   namespace: flux-system
 spec:
-  path: ./flux/apps/life-automations/changedetection/app
+  path: ./k3s-stable/apps/life-automations/changedetection/app
   sourceRef:
     kind: GitRepository
     name: flux-system

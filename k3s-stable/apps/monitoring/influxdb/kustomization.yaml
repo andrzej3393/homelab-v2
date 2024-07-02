@@ -5,7 +5,7 @@ metadata:
   name: influxdb
   namespace: flux-system
 spec:
-  path: ./flux/apps/monitoring/influxdb/app
+  path: ./k3s-stable/apps/monitoring/influxdb/app
   sourceRef:
     kind: GitRepository
     name: flux-system

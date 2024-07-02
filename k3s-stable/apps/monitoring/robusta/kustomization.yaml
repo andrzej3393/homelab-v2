@@ -5,7 +5,7 @@ metadata:
   name: robusta
   namespace: flux-system
 spec:
-  path: ./flux/apps/monitoring/robusta/app
+  path: ./k3s-stable/apps/monitoring/robusta/app
   sourceRef:
     kind: GitRepository
     name: flux-system

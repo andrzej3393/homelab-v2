@@ -5,7 +5,7 @@ metadata:
   name: kyverno
   namespace: flux-system
 spec:
-  path: ./flux/apps/kyverno/kyverno/app
+  path: ./k3s-stable/apps/kyverno/kyverno/app
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -21,7 +21,7 @@ spec:
 #  name: kyverno-policies
 #  namespace: flux-system
 #spec:
-#  path: ./flux/apps/kyverno/kyverno/policies
+#  path: ./k3s-stable/apps/kyverno/kyverno/policies
 #  sourceRef:
 #    kind: GitRepository
 #    name: flux-system

@@ -5,7 +5,7 @@ metadata:
   name: homepage
   namespace: flux-system
 spec:
-  path: ./flux/apps/homepage/homepage/app
+  path: ./k3s-stable/apps/homepage/homepage/app
   sourceRef:
     kind: GitRepository
     name: flux-system
