@@ -1,0 +1,32 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: ingress-nginx
+  namespace: ingress-nginx
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: ingress-nginx
+      version: 4.10.1
+      sourceRef:
+        kind: HelmRepository
+        name: ingress-nginx
+        namespace: flux-system
+  values:
+    controller:
+      extraArgs:
+        default-ssl-certificate: "ingress-nginx/homelab-tls"
+      service:
+        annotations:
+          metallb.universe.tf/loadBalancerIPs: 10.93.30.50
+        externalTrafficPolicy: Local
+      ingressClassResource:
+        default: true
+  install:
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5

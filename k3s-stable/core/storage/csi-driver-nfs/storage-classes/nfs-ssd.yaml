@@ -1,0 +1,14 @@
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: nfs-ssd
+provisioner: nfs.csi.k8s.io
+parameters:
+  server: "10.93.82.22"
+  share: /mnt/ssd/k3s-stable
+  subDir: "$${pvc.metadata.namespace}--$${pvc.metadata.name}"
+reclaimPolicy: Retain
+volumeBindingMode: Immediate
+# Note: The first two options are strictly for NFSv4.2
+mountOptions: ["nfsvers=4.2", "nconnect=8", "hard", "noatime"]

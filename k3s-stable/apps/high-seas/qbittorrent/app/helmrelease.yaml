@@ -1,0 +1,106 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: qbittorrent
+  namespace: high-seas
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.2.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 5
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    controllers:
+      qbittorrent:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/onedr0p/qbittorrent
+              tag: 4.6.5
+            env:
+              TZ: Europe/Warsaw
+              QBITTORRENT__PORT: &port 80
+              QBITTORRENT__BT_PORT: &bittorrentPort 37331
+            resources:
+              requests:
+                cpu: 500m
+                memory: 250Mi
+              limits:
+                memory: 2Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    service:
+      app:
+        enabled: true
+        controller: qbittorrent
+        ports:
+          http:
+            port: *port
+      bittorrent:
+        enabled: true
+        controller: qbittorrent
+        type: LoadBalancer
+        externalTrafficPolicy: Local
+        annotations:
+          metallb.universe.tf/loadBalancerIPs: 10.93.30.51
+        ports:
+          bittorrent:
+            enabled: true
+            port: *bittorrentPort
+            protocol: TCP
+            targetPort: *bittorrentPort
+          microtp:
+            enabled: true
+            port: *bittorrentPort
+            protocol: UDP
+            targetPort: *bittorrentPort
+    ingress:
+      app:
+        enabled: true
+        className: nginx
+        annotations:
+          external-dns.alpha.kubernetes.io/hostname: "qbittorrent.${HOMELAB_DOMAIN}"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/name: "qBittorrent"
+          gethomepage.dev/group: "Media"
+          gethomepage.dev/icon: "qbittorrent"
+          gethomepage.dev/widget.type: "qbittorrent"
+          gethomepage.dev/widget.url: "https://qbittorrent.${HOMELAB_DOMAIN}"
+          gethomepage.dev/widget.username: "${QBITTORRENT_USERNAME}"
+          gethomepage.dev/widget.password: "${QBITTORRENT_PASSWORD}"
+        hosts:
+          - host: "qbittorrent.${HOMELAB_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+    persistence:
+      config:
+        existingClaim: qbittorrent
+      media:
+        type: nfs
+        server: 10.93.82.10
+        path: /mnt/HDD-Pool/media
+        globalMounts:
+          - path: /downloads
+            subPath: torrents

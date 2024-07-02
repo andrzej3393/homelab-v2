@@ -1,0 +1,59 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jellyfin
+  namespace: ingress-nginx
+spec:
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 8096
+  clusterIP: None
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: jellyfin
+  namespace: ingress-nginx
+subsets:
+  - addresses:
+      - ip: 10.93.30.16
+    ports:
+      - name: http
+        port: 8096
+        protocol: TCP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: jellyfin
+  namespace: ingress-nginx
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    external-dns.alpha.kubernetes.io/hostname: "jellyfin.${HOMELAB_DOMAIN}"
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: "Jellyfin"
+    gethomepage.dev/group: "Media"
+    gethomepage.dev/icon: "jellyfin"
+    gethomepage.dev/widget.type: "jellyfin"
+    gethomepage.dev/widget.url: "https://jellyfin.${HOMELAB_DOMAIN}"
+    gethomepage.dev/widget.key: "${JELLYFIN_TOKEN}"
+    gethomepage.dev/widget.enableBlocks: "true"
+    gethomepage.dev/widget.enableNowPlaying: "true"
+    gethomepage.dev/widget.enableUser: "true"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: "jellyfin.${HOMELAB_DOMAIN}"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: jellyfin
+                port:
+                  number: 80

@@ -1,0 +1,16 @@
+apiVersion: nfd.k8s-sigs.io/v1alpha1
+kind: NodeFeatureRule
+metadata:
+  name: lg-bdrom
+spec:
+  rules:
+    - # LG (HLDS) GP08NU6W DVD-RW
+      name: lg.bdrom
+      labels:
+        lg.feature.node.kubernetes.io/bdrom: "true"
+      matchFeatures:
+        - feature: usb.device
+          matchExpressions:
+            class: { op: In, value: ["08"] }
+            vendor: { op: In, value: ["152e"] }
+            device: { op: In, value: ["2571"] }

@@ -1,0 +1,86 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: scrutiny
+  namespace: monitoring
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.2.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  driftDetection:
+    mode: enabled
+  values:
+    controllers:
+      main:
+        containers:
+          main:
+            image:
+              repository: ghcr.io/analogj/scrutiny
+              tag: master-web
+            env:
+              SCRUTINY_WEB_INFLUXDB_HOST: influxdb.monitoring.svc.cluster.local
+              SCRUTINY_WEB_INFLUXDB_PORT: 80
+              SCRUTINY_WEB_INFLUXDB_TOKEN:
+                valueFrom:
+                  secretKeyRef:
+                    name: influxdb-auth
+                    key: admin-token
+              SCRUTINY_WEB_INFLUXDB_ORG: homelab
+    #              SCRUTINY_NOTIFY_URLS:
+    #                valueFrom:
+    #                  secretKeyRef:
+    #                    name: scrutiny
+    #                    key: SCRUTINY_NOTIFY_URLS
+    ingress:
+      main:
+        enabled: true
+        className: nginx
+        annotations:
+          external-dns.alpha.kubernetes.io/hostname: "scrutiny.${HOMELAB_DOMAIN}"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/name: "Scrutiny"
+          gethomepage.dev/group: "Monitoring"
+          gethomepage.dev/icon: "scrutiny-light"
+          gethomepage.dev/widget.type: "scrutiny"
+          gethomepage.dev/widget.url: "https://scrutiny.${HOMELAB_DOMAIN}"
+        hosts:
+          - host: "scrutiny.${HOMELAB_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: main
+                  port: http
+    service:
+      main:
+        controller: main
+        ports:
+          http:
+            port: 8080
+    persistence:
+      config:
+        enabled: true
+        existingClaim: scrutiny-config
+        advancedMounts:
+          main:
+            main:
+              - path: /opt/scrutiny/config
+                subPath: scrutiny
+#    resources:
+#      requests:
+#        cpu: 100m
+#        memory: 128Mi
+#      limits:
+#        cpu: 100m
+#        memory: 128Mi

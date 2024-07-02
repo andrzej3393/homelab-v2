@@ -1,0 +1,26 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: kube-prometheus-stack
+  namespace: flux-system
+spec:
+  path: ./flux/apps/monitoring/kube-prometheus-stack/app
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  wait: true
+  prune: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 15m
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: core-substitutions
+      - kind: Secret
+        name: grafana-substitutions
+      - kind: Secret
+        name: prometheus-substitutions
+      - kind: Secret
+        name: healthchecks-substitutions

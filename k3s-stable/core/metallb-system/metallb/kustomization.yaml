@@ -1,0 +1,34 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: metallb-helm-release
+  namespace: flux-system
+spec:
+  path: ./flux/core/metallb-system/metallb/helm
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  wait: true
+  prune: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 15m
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: metallb-crs
+  namespace: flux-system
+spec:
+  path: ./flux/core/metallb-system/metallb/crs
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  wait: true
+  prune: true
+  interval: 10m
+  retryInterval: 1m
+  timeout: 5m
+  dependsOn:
+    - name: metallb-helm-release

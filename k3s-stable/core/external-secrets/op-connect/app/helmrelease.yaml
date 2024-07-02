@@ -1,0 +1,28 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: op-connect
+  namespace: external-secrets
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: connect
+      version: 1.15.0
+      sourceRef:
+        kind: HelmRepository
+        name: 1password
+        namespace: flux-system
+  values:
+    connect:
+      credentialsName: op-connect-credentials
+      credentialsKey: credentials_b64
+  install:
+    crds: Create
+    remediation:
+      retries: 5
+  upgrade:
+    crds: CreateReplace
+    remediation:
+      retries: 5

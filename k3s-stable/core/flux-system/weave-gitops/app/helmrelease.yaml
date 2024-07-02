@@ -1,0 +1,44 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: weave-gitops
+  namespace: flux-system
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: weave-gitops
+      version: 4.0.36
+      sourceRef:
+        kind: HelmRepository
+        name: weaveworks
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  uninstall:
+    keepHistory: false
+  values:
+    adminUser:
+      create: true
+      createSecret: false
+      username: admin
+    rbac:
+      impersonationResourceNames: ["admin"]
+    ingress:
+      enabled: true
+      className: nginx
+      annotations:
+        external-dns.alpha.kubernetes.io/hostname: "gitops.${HOMELAB_DOMAIN}"
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/name: "Weave Gitops"
+        gethomepage.dev/group: "Monitoring"
+        gethomepage.dev/icon: "https://raw.githubusercontent.com/fluxcd/website/main/static/favicons/favicon.png"
+      hosts:
+        - host: "gitops.${HOMELAB_DOMAIN}"
+          paths:
+            - path: /
+              pathType: Prefix

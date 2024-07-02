@@ -1,0 +1,42 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: playwright-chrome
+  namespace: flux-system
+spec:
+  path: ./flux/apps/life-automations/changedetection/playwright
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  wait: true
+  prune: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 15m
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: changedetection
+  namespace: flux-system
+spec:
+  path: ./flux/apps/life-automations/changedetection/app
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  wait: true
+  prune: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 15m
+  dependsOn:
+    - name: storage-classes
+    - name: cluster-config
+    - name: playwright-chrome
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: core-substitutions
+      - kind: Secret
+        name: changedetection-substitutions

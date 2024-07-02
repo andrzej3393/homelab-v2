@@ -1,0 +1,67 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: changedetection
+  namespace: life-automations
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.2.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+      interval: 15m
+  install:
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  values:
+    controllers:
+      main:
+        containers:
+          main:
+            image:
+              repository: docker.io/dgtlmoon/changedetection.io
+              tag: "0.45.23"
+            env:
+              TZ: Europe/Warsaw
+              BASE_URL: "https://changedetection.${HOMELAB_DOMAIN}"
+              PLAYWRIGHT_DRIVER_URL: "ws://playwright-chrome.life-automations.svc.cluster.local.:3000/?stealth=1&--disable-web-security=true"
+    service:
+      main:
+        controller: main
+        ports:
+          http:
+            port: 5000
+    ingress:
+      main:
+        enabled: true
+        className: nginx
+        annotations:
+          external-dns.alpha.kubernetes.io/hostname: "changedetection.${HOMELAB_DOMAIN}"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/name: "Changedetection.io"
+          gethomepage.dev/group: "Automations"
+          gethomepage.dev/icon: "changedetection-io"
+          gethomepage.dev/widget.type: "changedetectionio"
+          gethomepage.dev/widget.url: "https://changedetection.${HOMELAB_DOMAIN}"
+          gethomepage.dev/widget.key: "${CD_API_KEY}"
+        hosts:
+          - host: "changedetection.${HOMELAB_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: main
+                  port: http
+    persistence:
+      config:
+        enabled: true
+        existingClaim: changedetection-data
+        globalMounts:
+          - path: /datastore

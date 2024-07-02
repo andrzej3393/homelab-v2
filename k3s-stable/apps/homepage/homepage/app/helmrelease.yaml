@@ -1,0 +1,222 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: homepage
+  namespace: homepage
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: homepage
+      version: 1.2.3
+      sourceRef:
+        kind: HelmRepository
+        name: jameswynn
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  uninstall:
+    keepHistory: false
+  values:
+    image:
+      repository: ghcr.io/gethomepage/homepage
+      tag: v0.8.13
+    enableRbac: true
+    serviceAccount:
+      create: true
+      name: homepage
+    ingress:
+      main:
+        enabled: true
+        annotations:
+          external-dns.alpha.kubernetes.io/hostname: "dash.${HOMELAB_DOMAIN}"
+        hosts:
+          - host: "dash.${HOMELAB_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+        ingressClassName: nginx
+    config:
+      services:
+        - Automations:
+            - Homeassistant:
+                icon: home-assistant
+                href: https://homeassistant.${HOMELAB_DOMAIN}/
+                ping: https://homeassistant.${HOMELAB_DOMAIN}/
+                widget:
+                  type: homeassistant
+                  url: https://homeassistant.${HOMELAB_DOMAIN}
+                  key: "${HOMEASSISTANT_TOKEN}"
+                  custom:
+                    - template: "{{ states('sensor.rack_power_meter_power', rounded=False, with_unit=True) }}"
+                      label: "Rack power usage"
+                    - template: "{{ states('sensor.rack_thermometer_temperature', rounded=False, with_unit=True) }}"
+                      label: "Rack temperature"
+                    - template: "{{ states('sensor.rack_thermometer_humidity', rounded=False, with_unit=True) }}"
+                      label: "Rack humidity"
+        - Monitoring:
+            - Sentry:
+                icon: sentry
+                href: https://andrzejgorski.sentry.io/
+            - Healthchecks.io:
+                icon: healthchecks
+                href: https://healthchecks.io/
+        - Hypervisors:
+            - Proxmox Cintra:
+                icon: proxmox
+                href: https://cintra.${HOMELAB_DOMAIN}:8006/
+                ping: https://cintra.${HOMELAB_DOMAIN}:8006/
+                widget:
+                  type: proxmox
+                  url: https://cintra.${HOMELAB_DOMAIN}:8006
+                  username: "${PROXMOX_HOMEPAGE_API_TOKEN_ID}"
+                  password: "${PROXMOX_HOMEPAGE_API_SECRET}"
+                  node: cintra
+                  fields: ["resources.cpu", "resources.mem"]
+            - Proxmox Novigrad:
+                icon: proxmox
+                href: https://novigrad.${HOMELAB_DOMAIN}:8006/
+                ping: https://novigrad.${HOMELAB_DOMAIN}:8006/
+                widget:
+                  type: proxmox
+                  url: https://novigrad.${HOMELAB_DOMAIN}:8006
+                  username: "${PROXMOX_HOMEPAGE_API_TOKEN_ID}"
+                  password: "${PROXMOX_HOMEPAGE_API_SECRET}"
+                  node: novigrad
+                  fields: ["resources.cpu", "resources.mem"]
+            - Proxmox Oxenfurt:
+                icon: proxmox
+                href: https://oxenfurt.${HOMELAB_DOMAIN}:8006/
+                ping: https://oxenfurt.${HOMELAB_DOMAIN}:8006/
+                widget:
+                  type: proxmox
+                  url: https://oxenfurt.${HOMELAB_DOMAIN}:8006
+                  username: "${PROXMOX_HOMEPAGE_API_TOKEN_ID}"
+                  password: "${PROXMOX_HOMEPAGE_API_SECRET}"
+                  node: oxenfurt
+                  fields: ["resources.cpu", "resources.mem"]
+            - Proxmox Rivia:
+                icon: proxmox
+                href: https://rivia.${HOMELAB_DOMAIN}:8006/
+                ping: https://rivia.${HOMELAB_DOMAIN}:8006/
+                widget:
+                  type: proxmox
+                  url: https://oxenfurt.${HOMELAB_DOMAIN}:8006
+                  username: "${PROXMOX_HOMEPAGE_API_TOKEN_ID}"
+                  password: "${PROXMOX_HOMEPAGE_API_SECRET}"
+                  node: oxenfurt
+                  fields: ["resources.cpu", "resources.mem"]
+            - Proxmox Vengerberg:
+                icon: proxmox
+                href: https://vengerberg.${HOMELAB_DOMAIN}:8006/
+                ping: https://vengerberg.${HOMELAB_DOMAIN}:8006/
+                widget:
+                  type: proxmox
+                  url: https://vengerberg.${HOMELAB_DOMAIN}:8006
+                  username: "${PROXMOX_HOMEPAGE_API_TOKEN_ID}"
+                  password: "${PROXMOX_HOMEPAGE_API_SECRET}"
+                  node: vengerberg
+                  fields: ["resources.cpu", "resources.mem"]
+        - IPMI:
+            - PiKVM:
+                icon: pikvm
+                href: https://pikvm.${HOMELAB_DOMAIN}/
+                ping: https://pikvm.${HOMELAB_DOMAIN}/
+            - Microserver iLO:
+                icon: ilo
+                href: https://ilo.${HOMELAB_DOMAIN}/
+                ping: https://ilo.${HOMELAB_DOMAIN}/
+        - Networking:
+            - OPNsense:
+                icon: opnsense
+                href: https://opnsense.${HOMELAB_DOMAIN}/
+                ping: https://opnsense.${HOMELAB_DOMAIN}/
+                widget:
+                  type: opnsense
+                  url: https://opnsense.${HOMELAB_DOMAIN}
+                  username: "${OPNSENSE_API_KEY}"
+                  password: "${OPNSENSE_API_SECRET}"
+            - Switch:
+                icon: d-link
+                href: http://switch.${HOMELAB_DOMAIN}/
+                ping: http://switch.${HOMELAB_DOMAIN}/
+            - AP:
+                icon: ubiquiti
+                href: https://ap.${HOMELAB_DOMAIN}/
+                ping: https://ap.${HOMELAB_DOMAIN}/
+        - Storage:
+            - TrueNAS:
+                icon: truenas
+                href: https://truenas.${HOMELAB_DOMAIN}/
+                ping: https://truenas.${HOMELAB_DOMAIN}/
+                widget:
+                  type: truenas
+                  url: https://truenas.${HOMELAB_DOMAIN}/
+                  key: "${TRUENAS_API_KEY}"
+                  enablePools: true
+      widgets:
+        - kubernetes:
+            cluster:
+              show: true
+              cpu: true
+              memory: true
+              showLabel: true
+              label: "k3s"
+            nodes:
+              show: false
+        - openmeteo:
+            label: Warsaw
+            latitude: 52.2297
+            longitude: 21.0122
+            timezone: Europe/Berlin
+            units: metric
+            cache: 10
+      bookmarks:
+      kubernetes:
+        mode: default
+      settings:
+        title: Homelab
+        theme: dark
+        color: neutral
+        useEqualHeights: true
+        headerStyle: boxed
+        background:
+          image: https://wallpapers.com/images/featured-full/berlin-uju0wyyf23ct9bu5.jpg
+          #          image: https://r4.wallpaperflare.com/wallpaper/382/840/29/city-poland-night-lights-wallpaper-7132f93582c8bf85addba267d96052b6.jpg
+          #          image: https://r0.pxfuel.com/original/132/575/uvuo31uuflnn5ehj5sdtj8etul62cef06372b7e.jpg
+          blur: sm
+          saturate: 50
+          brightness: 50
+          opacity: 50
+        layout:
+          # Services
+          - Automations:
+              tab: Services
+              style: row
+              columns: 2
+          - Media:
+              tab: Services
+          # Management
+          - Monitoring:
+              tab: Management
+              style: row
+              columns: 4
+          - Networking:
+              tab: Management
+              style: row
+              columns: 3
+          - Storage:
+              tab: Management
+              style: row
+          - Hypervisors:
+              tab: Management
+              style: row
+              columns: 5
+          - IPMI:
+              tab: Management
+              style: row
+              columns: 2

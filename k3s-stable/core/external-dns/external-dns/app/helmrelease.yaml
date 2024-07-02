@@ -1,0 +1,32 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: external-dns
+  namespace: external-dns
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: external-dns
+      version: 1.14.4
+      sourceRef:
+        kind: HelmRepository
+        name: external-dns
+        namespace: flux-system
+  values:
+    provider: cloudflare
+    domainFilters: ["${CLOUDFLARE_ZONE}"]
+    extraArgs:
+      - --cloudflare-dns-records-per-page=5000
+    env:
+      - name: CF_API_TOKEN
+        valueFrom:
+          secretKeyRef:
+            name: external-dns
+            key: api-token
+  install:
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5

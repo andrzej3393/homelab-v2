@@ -1,0 +1,101 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: speedtest
+  namespace: monitoring
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.2.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  driftDetection:
+    mode: enabled
+  values:
+    controllers:
+      main:
+        containers:
+          main:
+            image:
+              repository: lscr.io/linuxserver/speedtest-tracker
+              tag: v0.19.0-ls25
+            env:
+              PUID: 1000
+              PGID: 1000
+              PUBLIC_DASHBOARD: true
+              DB_CONNECTION: pgsql
+              DB_HOST:
+                valueFrom:
+                  secretKeyRef:
+                    name: speedtest-db-app
+                    key: host
+              DB_PORT:
+                valueFrom:
+                  secretKeyRef:
+                    name: speedtest-db-app
+                    key: port
+              DB_DATABASE:
+                valueFrom:
+                  secretKeyRef:
+                    name: speedtest-db-app
+                    key: dbname
+              DB_USERNAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: speedtest-db-app
+                    key: username
+              DB_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: speedtest-db-app
+                    key: password
+    ingress:
+      main:
+        enabled: true
+        className: nginx
+        annotations:
+          external-dns.alpha.kubernetes.io/hostname: "speedtest.${HOMELAB_DOMAIN}"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/name: "Speedtest"
+          gethomepage.dev/group: "Monitoring"
+          gethomepage.dev/icon: "speedtest-tracker"
+          gethomepage.dev/widget.type: "speedtest"
+          gethomepage.dev/widget.url: "https://speedtest.${HOMELAB_DOMAIN}"
+        hosts:
+          - host: "speedtest.${HOMELAB_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: main
+                  port: http
+    service:
+      main:
+        controller: main
+        ports:
+          http:
+            port: 80
+    persistence:
+      config:
+        enabled: true
+        existingClaim: speedtest
+        advancedMounts:
+          main:
+            main:
+              - path: /config
+#    resources:
+#      requests:
+#        cpu: 100m
+#        memory: 128Mi
+#      limits:
+#        cpu: 100m
+#        memory: 128Mi

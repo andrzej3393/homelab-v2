@@ -1,0 +1,49 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: drive-invoices
+  namespace: life-automations
+spec:
+  schedule: "30 * * * *"
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: drive-invoices
+              image: ghcr.io/andrzej3393/drive-invoices:master
+              imagePullPolicy: Always
+              command:
+                - poetry
+                - run
+                - python
+                - drive_invoices/__init__.py
+              volumeMounts:
+                - mountPath: "/app/token_from_secret"
+                  name: secret-gcp-token
+                  readOnly: true
+                - mountPath: "/app/token"
+                  name: drive-invoices-token
+              lifecycle:
+                postStart:
+                  exec:
+                    command:
+                      - "/bin/sh"
+                      - "-c"
+                      - "cp /app/token_from_secret/token.json /app/token/token.json"
+          volumes:
+            - name: secret-gcp-token
+              secret:
+                secretName: drive-invoices-gcp-token
+            - name: drive-invoices-token
+              persistentVolumeClaim:
+                claimName: drive-invoices-token
+          imagePullSecrets:
+            - name: ghcr-pull
+          restartPolicy: OnFailure
+          dnsConfig:
+            options:
+              - name: ndots
+                value: "1"

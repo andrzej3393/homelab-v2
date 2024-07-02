@@ -1,0 +1,25 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: ping-healthchecks-io
+  namespace: monitoring
+spec:
+  schedule: "*/5 * * * *"
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: ping-healthchecks-io
+              image: quay.io/curl/curl:8.8.0
+              imagePullPolicy: Always
+              args:
+                - "-fsS"
+                - "-m"
+                - "10"
+                - "--retry"
+                - "5"
+                - "https://hc-ping.com/${HC_K8S_CHECK_UUID}"
+          restartPolicy: OnFailure
