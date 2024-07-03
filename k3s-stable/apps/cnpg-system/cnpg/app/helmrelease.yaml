@@ -27,3 +27,5 @@ spec:
       tag: "1.23.2"
     monitoring:
       podMonitorEnabled: true
+    podSecurityContext:
+      fsGroup: 3001
