@@ -6,6 +6,8 @@ metadata:
 spec:
   imageName: ghcr.io/cloudnative-pg/postgresql:15.7
   instances: 1
+  postgresUID: 3001
+  postgresGID: 3001
   storage:
     size: 5Gi
     storageClass: nfs-ssd
