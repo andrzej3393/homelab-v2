@@ -27,11 +27,11 @@ spec:
     keepHistory: false
   values:
     driver:
-      enabled: false
+      enabled: true
     nfd:
       enabled: false
     toolkit:
-      enabled: false
+      enabled: true
     devicePlugin:
       config:
         name: time-slicing-config
