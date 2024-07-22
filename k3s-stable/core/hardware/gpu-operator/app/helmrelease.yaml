@@ -1,0 +1,48 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: gpu-operator
+  namespace: hardware
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: gpu-operator
+      version: "v24.3.0"
+      sourceRef:
+        kind: HelmRepository
+        name: nvidia
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    crds: CreateReplace
+    remediation:
+      retries: 3
+  upgrade:
+    crds: CreateReplace
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    driver:
+      enabled: false
+    nfd:
+      enabled: false
+    toolkit:
+      enabled: false
+    devicePlugin:
+      config:
+        name: time-slicing-config
+        create: true
+        data:
+          any: |-
+            version: v1
+            flags:
+              migStrategy: none
+            sharing:
+              timeSlicing:
+                resources:
+                  - name: nvidia.com/gpu
+                    replicas: 6
