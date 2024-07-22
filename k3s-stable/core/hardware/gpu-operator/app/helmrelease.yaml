@@ -36,6 +36,7 @@ spec:
       config:
         name: time-slicing-config
         create: true
+        default: any
         data:
           any: |-
             version: v1
