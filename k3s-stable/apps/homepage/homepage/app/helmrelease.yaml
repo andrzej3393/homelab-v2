@@ -97,7 +97,6 @@ spec:
                 icon: ubiquiti
                 href: https://ap.${HOMELAB_DOMAIN}/
                 ping: https://ap.${HOMELAB_DOMAIN}/
-        - Storage:
       widgets:
         - kubernetes:
             cluster:
