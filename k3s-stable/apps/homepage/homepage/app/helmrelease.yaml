@@ -140,23 +140,22 @@ spec:
               columns: 2
           - Media:
               tab: Services
+              style: row
+              columns: 2
           # Management
           - Monitoring:
               tab: Management
               style: row
-              columns: 4
+              columns: 3
           - Networking:
               tab: Management
               style: row
               columns: 3
-          - Storage:
-              tab: Management
-              style: row
           - Hypervisors:
               tab: Management
               style: row
-              columns: 5
+              columns: 1
           - IPMI:
               tab: Management
               style: row
-              columns: 2
+              columns: 1
