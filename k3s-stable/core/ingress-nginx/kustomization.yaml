@@ -4,4 +4,4 @@ kind: Kustomization
 resources:
   - namespace.yaml
   - ingress-nginx/kustomization.yaml
-  - external-services/kustomization.yaml
+#  - external-services/kustomization.yaml
