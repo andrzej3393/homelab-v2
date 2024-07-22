@@ -10,15 +10,12 @@ resources:
   - jetstack.yaml
   - jameswynn.yaml
   - csi-driver-nfs.yaml
-  - fairwinds.yaml
   - bjw-s.yaml
   - influxdata.yaml
-  - kyverno.yaml
   - prometheus-community.yaml
   - christianknell.yaml
-  - mikrotik-prometheus-exporter.yaml
   - external-secrets.yaml
   - robusta.yaml
   - cnpg.yaml
-  - intel.yaml
   - nfd.yaml
+  - nvidia.yaml
