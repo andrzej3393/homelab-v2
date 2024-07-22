@@ -2,7 +2,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: nfd
+  name: gpu-operator
   namespace: flux-system
 spec:
   path: ./k3s-stable/core/hardware/gpu-operator/app
