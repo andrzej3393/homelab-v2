@@ -7,7 +7,6 @@ resources:
   - scrutiny/kustomization.yaml
   - kube-prometheus-stack/kustomization.yaml
   - pve-exporter/kustomization.yaml
-  #  - mikrotik-exporter/kustomization.yaml
   - robusta/kustomization.yaml
   - healthchecks_io/kustomization.yaml
   - speedtest/kustomization.yaml
