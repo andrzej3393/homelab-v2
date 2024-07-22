@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - namespace.yaml
   - nfd/kustomization.yaml
+  - gpu-operator/kustomization.yaml
