@@ -36,6 +36,6 @@ spec:
     ollama:
       enabled: false
     ollamaUrls:
-      - "ollama.ai.svc.cluster.local"
+      - "http://ollama.ai.svc.cluster.local:11434"
     persistence:
       storageClass: nfs-ssd
