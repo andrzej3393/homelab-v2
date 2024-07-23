@@ -133,6 +133,10 @@ spec:
           opacity: 50
         layout:
           # Services
+          - AI:
+              tab: Services
+              style: row
+              columns: 2
           - Automations:
               tab: Services
               style: row

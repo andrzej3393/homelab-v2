@@ -19,3 +19,4 @@ resources:
   - cnpg.yaml
   - nfd.yaml
   - nvidia.yaml
+  - ollama.yaml

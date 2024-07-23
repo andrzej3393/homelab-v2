@@ -1,0 +1,50 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: ollama
+  namespace: ai
+spec:
+  interval: 30m
+  timeout: 15m
+  chart:
+    spec:
+      chart: ollama
+      version: "0.45.0"
+      sourceRef:
+        kind: HelmRepository
+        name: ollama
+        namespace: flux-system
+  install:
+    crds: Create
+    remediation:
+      retries: 5
+  upgrade:
+    crds: CreateReplace
+    remediation:
+      retries: 5
+  values:
+    runtimeClassName: nvidia
+    ollama:
+      gpu:
+        enabled: true
+        type: 'nvidia'
+        number: 1
+      models:
+        - llama3
+    ingress:
+      enabled: true
+      className: nginx
+      annotations:
+        external-dns.alpha.kubernetes.io/hostname: "ollama.${HOMELAB_DOMAIN}"
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/name: "Ollama"
+        gethomepage.dev/group: "AI"
+        gethomepage.dev/icon: "ollama"
+      hosts:
+        - host: "ollama.${HOMELAB_DOMAIN}"
+          paths:
+            - path: /
+              pathType: Prefix
+    persistentVolume:
+      enabled: true
+      storageClass: nfs-ssd
