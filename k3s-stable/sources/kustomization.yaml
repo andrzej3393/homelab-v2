@@ -20,3 +20,4 @@ resources:
   - nfd.yaml
   - nvidia.yaml
   - ollama.yaml
+  - open-webui.yaml

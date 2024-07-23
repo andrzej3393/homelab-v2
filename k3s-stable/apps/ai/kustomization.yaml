@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - namespace.yaml
   - ollama/kustomization.yaml
+  - open-webui/kustomization.yaml
