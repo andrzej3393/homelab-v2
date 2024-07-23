@@ -5,7 +5,7 @@ metadata:
   namespace: ai
 spec:
   interval: 30m
-  timeout: 15m
+  timeout: 60m
   chart:
     spec:
       chart: ollama
@@ -31,6 +31,8 @@ spec:
         number: 1
       models:
         - llama3
+        - mistral
+        - llama3:70b
     ingress:
       enabled: true
       className: nginx
