@@ -1,0 +1,22 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: ollama
+  namespace: flux-system
+spec:
+  path: ./k3s-stable/apps/ai/ollama/app
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  wait: true
+  prune: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 15m
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: core-substitutions
+  dependsOn:
+    - name: cluster-config
