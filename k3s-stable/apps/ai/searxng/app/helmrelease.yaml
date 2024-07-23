@@ -23,6 +23,12 @@ spec:
     remediation:
       retries: 5
   values:
+    searxng:
+      config:
+        search:
+          formats:
+            - html
+            - json
     env:
       INSTANCE_NAME: "searxng"
       BASE_URL: "https://searxng.${HOMELAB_DOMAIN}"
