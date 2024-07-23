@@ -23,6 +23,19 @@ spec:
     remediation:
       retries: 5
   values:
+    extraEnvVars:
+      - name: "DEFAULT_USER_ROLE"
+        value: "user"
+      - name: "ENABLE_COMMUNITY_SHARING"
+        value: "false"
+      - name: "RAG_EMBEDDING_ENGINE"
+        value: "ollama"
+      - name: "ENABLE_RAG_WEB_SEARCH"
+        value: "true"
+      - name: "RAG_WEB_SEARCH_ENGINE"
+        value: "searxng"
+      - name: "SEARXNG_QUERY_URL"
+        value: "https://searxng.ai.svc.cluster.local:8080/search?q=<query>"
     ingress:
       enabled: true
       class: nginx
