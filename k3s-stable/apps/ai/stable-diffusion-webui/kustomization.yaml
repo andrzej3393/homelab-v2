@@ -28,3 +28,4 @@ spec:
       target:
         kind: StatefulSet
         name: stable-diffusion-webui
+        namespace: ai
