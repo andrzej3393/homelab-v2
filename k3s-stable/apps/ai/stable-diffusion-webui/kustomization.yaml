@@ -20,7 +20,7 @@ spec:
         name: core-substitutions
   dependsOn:
     - name: cluster-config
-  patchs:
+  patches:
     - patch: |-
         - op: add
           path: /spec/template/spec/runtimeClassName
