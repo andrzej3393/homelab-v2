@@ -22,3 +22,4 @@ resources:
   - ollama.yaml
   - open-webui.yaml
   - searxng.yaml
+  - stable-diffusion-webui.yaml

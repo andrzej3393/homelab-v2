@@ -6,3 +6,4 @@ resources:
   - ollama/kustomization.yaml
   - open-webui/kustomization.yaml
   - searxng/kustomization.yaml
+  - stable-diffusion-webui/kustomization.yaml

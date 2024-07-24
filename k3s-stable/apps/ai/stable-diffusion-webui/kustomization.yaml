@@ -1,0 +1,30 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: stable-diffusion-webui
+  namespace: flux-system
+spec:
+  path: ./k3s-stable/apps/ai/stable-diffusion-webui/app
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  wait: true
+  prune: true
+  interval: 30m
+  retryInterval: 1m
+  timeout: 15m
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: core-substitutions
+  dependsOn:
+    - name: cluster-config
+  patchs:
+    - patch: |-
+        - op: add
+          path: /spec/template/spec/runtimeClassName
+          value: nvidia
+      target:
+        kind: StatefulSet
+        name: stable-diffusion-webui

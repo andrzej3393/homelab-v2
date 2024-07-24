@@ -1,0 +1,44 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: stable-diffusion-webui
+  namespace: ai
+spec:
+  interval: 30m
+  timeout: 15m
+  chart:
+    spec:
+      chart: stable-diffusion
+      version: "1.0.6"
+      sourceRef:
+        kind: HelmRepository
+        name: stable-diffusion-webui
+        namespace: flux-system
+  install:
+    crds: Create
+    remediation:
+      retries: 5
+  upgrade:
+    crds: CreateReplace
+    remediation:
+      retries: 5
+  values:
+    persistence:
+      storageClass: nfs-ssd
+    ingress:
+      enabled: true
+      className: nginx
+      annotations:
+        external-dns.alpha.kubernetes.io/hostname: "stable-diffusion.${HOMELAB_DOMAIN}"
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/name: "Stable Diffusion WebUI"
+        gethomepage.dev/group: "AI"
+        gethomepage.dev/icon: "https://user-images.githubusercontent.com/36368048/196280759-a5e72ca9-483d-4f77-8bae-263ff5db2488.png"
+      hosts:
+        - host: "stable-diffusion.${HOMELAB_DOMAIN}"
+          paths:
+            - path: /
+              pathType: ImplementationSpecific
+    resources:
+      limits:
+        nvidia.com/gpu: 1
