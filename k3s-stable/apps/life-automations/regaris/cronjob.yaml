@@ -5,6 +5,7 @@ metadata:
   namespace: life-automations
 spec:
   schedule: "21 12 * * 1-5"
+  timeZone: "Europe/Warsaw"
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   jobTemplate:
