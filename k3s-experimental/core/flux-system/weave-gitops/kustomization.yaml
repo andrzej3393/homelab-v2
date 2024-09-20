@@ -19,5 +19,5 @@ spec:
       - kind: Secret
         name: core-substitutions
   dependsOn:
-    - name: ingress-nginx
+    - name: cilium
     - name: cluster-config
