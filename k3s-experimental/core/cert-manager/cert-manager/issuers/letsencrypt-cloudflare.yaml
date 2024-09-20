@@ -13,7 +13,7 @@ spec:
     solvers:
       - selector:
           dnsZones:
-            - "experimental.${HOMELAB_DOMAIN}"
+            - "${HOMELAB_DOMAIN}"
         dns01:
           cloudflare:
             apiTokenSecretRef:
