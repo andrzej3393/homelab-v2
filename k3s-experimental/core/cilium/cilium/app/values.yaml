@@ -1,0 +1,35 @@
+kubeProxyReplacement: true
+
+k8sServiceHost: 10.93.20.24
+k8sServicePort: 6443
+k8sClientRateLimit:
+  qps: 50
+  burst: 200
+
+l2announcements:
+  enabled: true
+
+externalIPs:
+  enabled: true
+
+ingressController:
+  enabled: true
+  default: true
+  loadBalancerMode: shared
+  defaultSecretNamespace: cert-manager
+  defaultSecretName: homelab-tls
+  service:
+    annotations:
+      io.cilium/lb-ipam-ips: 10.93.30.100
+
+operator:
+  replicas: 1
+  rollOutPods: true
+
+rollOutCiliumPods: true
+
+hubble:
+  relay:
+    enabled: true
+  ui:
+    enabled: true

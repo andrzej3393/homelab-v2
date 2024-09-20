@@ -1,0 +1,17 @@
+apiVersion: external-secrets.io/v1beta1
+kind: ClusterSecretStore
+metadata:
+  name: op-connect
+  namespace: external-secrets
+spec:
+  provider:
+    onepassword:
+      connectHost: http://onepassword-connect.external-secrets.svc.cluster.local:8080
+      vaults:
+        Homelab: 1
+      auth:
+        secretRef:
+          connectTokenSecretRef:
+            name: op-connect-credentials
+            key: token
+            namespace: external-secrets
