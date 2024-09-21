@@ -5,7 +5,7 @@ metadata:
   name: cilium
   namespace: flux-system
 spec:
-  path: ./k3s-experimental/core/cilium/cilium/app/kustomization.yaml
+  path: ./k3s-experimental/core/cilium/cilium/app
   sourceRef:
     kind: GitRepository
     name: flux-system
