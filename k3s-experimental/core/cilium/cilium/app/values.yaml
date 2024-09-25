@@ -19,8 +19,7 @@ ingressController:
   defaultSecretNamespace: cert-manager
   defaultSecretName: homelab-tls
   service:
-    annotations:
-      io.cilium/lb-ipam-ips: 10.93.30.100
+    loadBalancerIP: 10.93.30.100
 
 operator:
   replicas: 1
