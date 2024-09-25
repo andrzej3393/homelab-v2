@@ -15,7 +15,7 @@ spec:
         namespace: flux-system
   values:
     provider: cloudflare
-    domainFilters: ["experimental.${CLOUDFLARE_ZONE}"]
+    domainFilters: ["${CLOUDFLARE_ZONE}"]
     txtPrefix: "k3s-experimental"
     extraArgs:
       - --cloudflare-dns-records-per-page=5000
