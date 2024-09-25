@@ -21,6 +21,8 @@ spec:
       retries: 5
   uninstall:
     keepHistory: false
+  driftDetection:
+    mode: enabled
   values:
     adminUser:
       create: true
