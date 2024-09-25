@@ -16,7 +16,7 @@ spec:
   values:
     provider: cloudflare
     domainFilters: ["${CLOUDFLARE_ZONE}"]
-    txtPrefix: "k3s-experimental"
+    txtPrefix: "k3s-experimental-"
     extraArgs:
       - --cloudflare-dns-records-per-page=5000
     env:
