@@ -19,7 +19,7 @@ ingressController:
   defaultSecretNamespace: cert-manager
   defaultSecretName: homelab-tls
   service:
-    loadBalancerIP: 10.93.30.100
+    loadBalancerIP: 10.93.30.101
 
 operator:
   replicas: 1
