@@ -10,3 +10,4 @@ resources:
   - bjw-s.yaml
   - external-secrets.yaml
   - robusta.yaml
+  - cilium.yaml
