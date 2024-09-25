@@ -10,5 +10,5 @@ spec:
     name: letsencrypt-cloudflare
     kind: ClusterIssuer
   dnsNames:
-    - "experimental.${HOMELAB_DOMAIN}"
-    - "*.experimental.${HOMELAB_DOMAIN}"
+    - "${HOMELAB_DOMAIN}"
+    - "*.${HOMELAB_DOMAIN}"
