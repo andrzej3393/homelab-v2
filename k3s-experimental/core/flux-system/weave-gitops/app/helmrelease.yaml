@@ -43,3 +43,6 @@ spec:
           paths:
             - path: /
               pathType: Prefix
+      tls:
+        - hosts:
+            - "gitops.${HOMELAB_DOMAIN}"
