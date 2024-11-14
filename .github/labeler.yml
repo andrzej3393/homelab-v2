@@ -2,15 +2,20 @@ ansible:
   - changed-files:
       - any-glob-to-any-file:
           - "ansible/**/*"
-flux:
+          - "requirements.txt"
+
+k3s:
   - changed-files:
       - any-glob-to-any-file:
-          - "flux/**/*"
+          - "k3s-stable/**/*"
+          - "k3s-experimental/**/*"
+
 docs:
   - changed-files:
       - any-glob-to-any-file:
           - "docs/**/*"
           - "**/*.md"
+
 actions:
   - changed-files:
       - any-glob-to-any-file:
