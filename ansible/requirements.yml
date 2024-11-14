@@ -10,7 +10,7 @@ roles:
     version: "v3.4.4"
   - name: geerlingguy.nfs
     src: https://github.com/geerlingguy/ansible-role-nfs.git
-    version: "2.0.0"
+    version: "2.1.0"
 
 collections:
   - name: community.healthchecksio
