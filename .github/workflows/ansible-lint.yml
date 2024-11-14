@@ -18,7 +18,7 @@ jobs:
       - name: Install ansible-lint
         run: |
           python3 -m pip install --upgrade pip
-          pip3 install -r ansible/requirements.txt
+          pip3 install -r requirements.txt
 
       - name: Install Galaxy modules
         run: |
