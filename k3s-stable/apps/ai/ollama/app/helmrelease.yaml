@@ -27,7 +27,7 @@ spec:
     ollama:
       gpu:
         enabled: true
-        type: 'nvidia'
+        type: "nvidia"
         number: 1
       models:
         - llama3
