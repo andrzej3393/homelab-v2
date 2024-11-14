@@ -1,21 +1,33 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:recommended", ":disableRateLimiting"],
-  "labels": ["renovate"],
+  "extends": [
+    "config:recommended",
+    ":disableRateLimiting"
+  ],
+  "labels": [
+    "renovate"
+  ],
   "assigneesFromCodeOwners": true,
   "minimumReleaseAge": "3 days",
   "internalChecksFilter": "strict",
   "ansible-galaxy": {
-    "fileMatch": ["^ansible/requirements\\.ya?ml$"]
+    "fileMatch": [
+      "^ansible/requirements\\.ya?ml$"
+    ]
   },
   "flux": {
-    "fileMatch": ["^k3s-stable/.*\\.ya?ml$"]
+    "fileMatch": [
+      "^k3s-stable/.*\\.ya?ml$"
+    ]
   },
   "helm-values": {
-    "fileMatch": ["^k3s-stable/.*\\.ya?ml$"]
+    "fileMatch": [
+      "^k3s-stable/.*\\.ya?ml$"
+    ]
   },
-  "regexManagers": [
+  "customManagers": [
     {
+      "customType": "regex",
       "description": "Process custom dependencies",
       "fileMatch": [
         "(^|/)ansible/.+\\.ya?ml(\\.j2)?$",
