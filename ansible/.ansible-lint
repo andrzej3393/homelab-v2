@@ -1,0 +1,16 @@
+profile: safety
+
+skip_list:
+  - package-latest
+  - yaml[line-length]
+  - name[template]
+  - role-name[path]
+
+exclude_paths:
+  - playbooks/base/
+  - collections/ansible_collections/
+  - roles/geerlingguy.ntp/
+  - roles/geerlingguy.nfs/
+  - roles/geerlingguy.node_exporter/
+  - roles/lae.proxmox/
+  - roles/xanmanning.k3s/

@@ -1,0 +1,50 @@
+argument_specs:
+  main:
+    short_description: User role
+    options:
+      users:
+        type: list
+        required: true
+        elements: dict
+        options:
+          login:
+            type: str
+            required: true
+          password:
+            type: str
+            required: false
+            default: ""
+          groups:
+            type: list
+            required: false
+            default: []
+            elements: str
+          ssh_public_keys:
+            type: list
+            required: false
+            default: []
+            elements: str
+          state:
+            type: str
+            required: false
+            default: "present"
+            choices:
+              - "present"
+              - "absent"
+          passworded_sudo:
+            type: bool
+            required: false
+            default: false
+          passwordless_sudo:
+            type: bool
+            required: false
+            default: false
+          shell:
+            type: str
+            required: false
+          uid:
+            type: int
+            required: false
+          gid:
+            type: int
+            required: false

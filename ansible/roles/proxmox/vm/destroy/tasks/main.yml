@@ -1,0 +1,26 @@
+- name: Stop VM
+  delegate_to: localhost
+  community.general.proxmox_kvm:
+    api_host: "{{ proxmox_api_host }}"
+    api_user: "{{ proxmox_api_user }}"
+    api_password: "{{ proxmox_api_password }}"
+    vmid: "{{ hostvars[proxmox_vm_name].proxmox_vmid }}"
+    state: stopped
+    force: true
+
+- name: Wait for SSH to be stopped
+  delegate_to: localhost
+  ansible.builtin.wait_for:
+    port: 22
+    host: "{{ ansible_host }}"
+    state: stopped
+
+- name: Destroy VM
+  delegate_to: localhost
+  community.general.proxmox_kvm:
+    api_host: "{{ proxmox_api_host }}"
+    api_user: "{{ proxmox_api_user }}"
+    api_password: "{{ proxmox_api_password }}"
+    vmid: "{{ hostvars[proxmox_vm_name].proxmox_vmid }}"
+    state: absent
+    force: true

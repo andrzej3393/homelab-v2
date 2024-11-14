@@ -1,0 +1,15 @@
+- name: Set hostname
+  become: true
+  ansible.builtin.hostname:
+    name: "{{ inventory_hostname }}.{{ homelab_domain }}"
+
+- name: Update hosts file
+  become: true
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    search_string: "{{ ansible_host }}"
+    line: "{{ ansible_host }} {{ inventory_hostname }}.{{ homelab_domain }} {{ inventory_hostname }}"
+    owner: root
+    group: root
+    mode: "0644"
+  when: system_set_hosts_file

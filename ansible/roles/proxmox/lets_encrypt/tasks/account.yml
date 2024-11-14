@@ -1,0 +1,29 @@
+- name: Get existing accounts
+  become: true
+  command: "pvesh get /cluster/acme/account --output-format json"
+  register: _pve_acme_accounts
+  changed_when: false
+
+- name: Create account if it does not exist
+  when: not (_pve_acme_accounts.stdout | from_json | json_query('[?name==`{{ pve_acme_server }}`].name | [0]')) # noqa no-jinja-when
+  block:
+    - name: Get directories
+      become: true
+      command: "pvesh get /cluster/acme/directories --output-format json"
+      register: _pve_acme_directories
+      changed_when: false
+
+    - name: Select directory
+      set_fact:
+        _pve_acme_directory: "{{ _pve_acme_directories.stdout | from_json | json_query('[?' + ('!' if pve_acme_server == 'prod' else '') + 'contains(name, `Staging`)].url') | first }}"
+      changed_when: false
+
+    - name: Get TOS URL
+      become: true
+      command: "pvesh get /cluster/acme/tos --output-format json"
+      register: _pve_acme_tos_url
+      changed_when: false
+
+    - name: Create account
+      become: true
+      command: "pvesh create /cluster/acme/account -contact {{ pve_acme_email }} -directory {{ _pve_acme_directory }} -tos_url {{ _pve_acme_tos_url.stdout }} -name {{ pve_acme_server }}"

@@ -1,0 +1,35 @@
+- name: "Set up homelab domain in Cloudflare"
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  tasks:
+    - name: "Prepare dynamic record/IP matrix from inventory"
+      ansible.builtin.set_fact:
+        domains_hosts_dynamic: |-
+          [
+          {% for host, vars in hostvars.items() %}
+            {% for entry in vars.domains_host %}
+              {
+                "record": "{{ entry.record }}",
+                "value": "{{ entry.value }}",
+                "type": "{{ entry.type }}",
+                "extras": "{{ entry.extras | default({}) }}"
+              }
+              {% if not loop.last %},{% endif %}
+            {% endfor %}
+            {% if not loop.last %},{% endif %}
+          {% endfor %}
+          ]
+
+    - name: "Set up homelab domains in Cloudflare"
+      community.general.cloudflare_dns:
+        zone: "{{ homelab_domain }}"
+        record: "{{ item.record }}"
+        type: "{{ item.type }}"
+        ttl: 120
+        value: "{{ item.value }}"
+        priority: "{{ item.extras.priority | default(1) }}"
+        api_token: "{{ lookup('community.general.onepassword', 'Cloudflare', vault='Homelab', field='token') }}"
+        solo: true
+      loop: "{{ domains_hosts_dynamic + domains_static }}"

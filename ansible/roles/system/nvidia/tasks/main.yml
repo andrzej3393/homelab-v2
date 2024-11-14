@@ -1,0 +1,58 @@
+- name: Install requirements
+  become: true
+  ansible.builtin.package:
+    name:
+      - openssl
+      - mokutil
+      - gcc
+      - make
+      - linux-headers-amd64
+      - dkms
+      - gnupg
+      - ca-certificates
+      - apt-transport-https
+      - curl
+
+- name: Blacklist nouveau modules
+  become: true
+  lineinfile:
+    path: /etc/modprobe.d/blacklist.conf
+    line: "blacklist nouveau"
+    create: true
+    mode: "0644"
+  notify: Update initramfs
+
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers
+
+- name: Download Nvidia drivers
+  ansible.builtin.get_url:
+    url: "https://us.download.nvidia.com/XFree86/Linux-x86_64/{{ nvidia_driver_version }}/NVIDIA-Linux-x86_64-{{ nvidia_driver_version }}.run"
+    dest: "/tmp/nvidia.run"
+    mode: "0755"
+
+- name: Install Nvidia drivers
+  become: true
+  ansible.builtin.command: "/tmp/nvidia.run --silent --dkms"
+  args:
+    creates: "/usr/bin/nvidia-smi"
+  notify: Update initramfs
+
+- name: Add Nvidia GPG key
+  become: true
+  apt_key:
+    url: "https://nvidia.github.io/libnvidia-container/gpgkey"
+    state: present
+
+- name: Add Nvidia container toolkit repo
+  become: true
+  apt_repository:
+    repo: "deb https://nvidia.github.io/libnvidia-container/stable/deb/$(ARCH) /"
+    state: present
+
+- name: Install Nvidia container toolkit
+  become: true
+  ansible.builtin.package:
+    name: nvidia-container-toolkit
+    state: present
+    update_cache: true

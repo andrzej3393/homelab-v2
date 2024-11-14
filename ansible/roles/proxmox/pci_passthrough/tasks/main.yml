@@ -1,0 +1,30 @@
+- name: Read the first line of /etc/kernel/cmdline
+  command: head -n 1 /etc/kernel/cmdline
+  register: kernel_cmdline
+  changed_when: false
+
+- name: Check if intel_iommu flag already added
+  set_fact:
+    intel_iommu: "{{ kernel_cmdline.stdout.find('intel_iommu=on') != -1 }}"
+  changed_when: false
+
+- name: Add intel_iommu flag to /etc/kernel/cmdline
+  become: true
+  lineinfile:
+    path: /etc/kernel/cmdline
+    line: "{{ kernel_cmdline.stdout }} intel_iommu=on"
+    regexp: "^{{ kernel_cmdline.stdout }}"
+  when: not intel_iommu
+  notify: Boot refresh
+
+- name: Blacklist Nvidia modules
+  become: true
+  lineinfile:
+    path: /etc/modprobe.d/blacklist.conf
+    line: "blacklist {{ item }}"
+    create: true
+    mode: "0644"
+  loop:
+    - "nvidia*"
+    - "nouveau"
+  notify: Update initramfs

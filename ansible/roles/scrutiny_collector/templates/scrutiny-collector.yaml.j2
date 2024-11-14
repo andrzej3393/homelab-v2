@@ -1,0 +1,9 @@
+version: 1
+host:
+  id: "{{ inventory_hostname }}"
+api:
+  endpoint: "{{ scrutiny_collector_api_endpoint }}"
+commands:
+  metrics_smartctl_bin: "{{ scrutiny_collector_smartctl_binary_path.stdout }}"
+log:
+  level: "ERROR"

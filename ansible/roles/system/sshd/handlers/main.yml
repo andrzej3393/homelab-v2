@@ -1,0 +1,6 @@
+- name: Restart SSHD
+  ansible.builtin.service:
+    name: sshd
+    state: restarted
+  become: true
+  when: ansible_facts.services is defined and ansible_facts.services['sshd.service'] is defined and ansible_facts.services['sshd.service'].state == 'running'

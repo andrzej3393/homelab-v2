@@ -1,0 +1,10 @@
+[Unit]
+Description={{ scrutiny_collector_cronjob_name }}
+
+[Timer]
+Unit={{ scrutiny_collector_cronjob_name }}.service
+OnBootSec=15s
+OnUnitActiveSec={{ scrutiny_collector_interval_hours }}h
+
+[Install]
+WantedBy=timers.target

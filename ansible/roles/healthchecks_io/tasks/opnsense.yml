@@ -1,0 +1,24 @@
+- name: Install configd action
+  ansible.builtin.template:
+    src: configd_action.j2
+    dest: /usr/local/opnsense/service/conf/actions.d/actions_healthchecks_io.conf
+    owner: root
+    group: wheel
+    mode: "0644"
+  become: true
+  notify: Restart configd service
+
+- name: Flush handlers
+  meta: flush_handlers
+
+- name: Create cronjob
+  delegate_to: localhost
+  ansibleguy.opnsense.cron:
+    firewall: "{{ hostvars[inventory_hostname].opnsense_firewall }}"
+    ssl_verify: "{{ hostvars[inventory_hostname].opnsense_ssl_verify }}"
+    api_key: "{{ hostvars[inventory_hostname].opnsense_api_key }}"
+    api_secret: "{{ hostvars[inventory_hostname].opnsense_api_secret }}"
+    description: "{{ healthchecks_io_cronjob_name }}"
+    command: "healthchecks_io ping"
+    minutes: "*/{{ healthchecks_io_interval_minutes }}"
+    hours: "*"

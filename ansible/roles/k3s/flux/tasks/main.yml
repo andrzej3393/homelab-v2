@@ -1,0 +1,11 @@
+- name: Bootstrap Flux
+  delegate_to: localhost
+  environment:
+    GITHUB_TOKEN: "{{ lookup('community.general.onepassword', 'GitHub Flux Token', vault='Homelab', field='token') }}"
+  ansible.builtin.shell:
+    cmd: |
+      flux bootstrap github \
+        --owner=andrzej3393 \
+        --repository=homelab-v2 \
+        --branch=master \
+        --path={{ inventory_hostname }}/bootstrap

@@ -1,0 +1,15 @@
+- name: Upgrade packages
+  ansible.builtin.apt:
+    upgrade: dist
+    update_cache: true
+    autoclean: true
+    autoremove: true
+  become: true
+
+- name: Check if reboot required
+  ansible.builtin.stat:
+    path: /var/run/reboot-required
+  become: true
+  register: upgrade_packages_reboot_required_file
+  changed_when: upgrade_packages_reboot_required_file.stat.exists
+  notify: Reboot

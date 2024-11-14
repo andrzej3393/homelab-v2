@@ -1,0 +1,43 @@
+- name: VM setup
+  import_playbook: base/proxmox_vm_create.yml
+  vars:
+    vm_hosts: k3s-stable
+
+- name: Setup Nvidia
+  hosts: k3s-stable
+  roles:
+    - role: system/nvidia
+
+- name: Install nfs-common
+  hosts: k3s-stable
+  tasks:
+    - name: Install packages
+      apt:
+        update_cache: true
+        name: nfs-common
+        state: present
+      become: true
+
+- name: Install non-free-firmware
+  hosts: k3s-stable
+  tasks:
+    - name: Enable non-free-firmware repos
+      replace:
+        path: /etc/apt/sources.list.d/debian.sources
+        regexp: "^Components:.*$"
+        replace: "Components: main non-free-firmware"
+      become: true
+    - name: Install packages
+      apt:
+        update_cache: true
+        name: firmware-misc-nonfree
+        state: present
+      become: true
+
+- name: Deploy K3S
+  hosts: k3s-stable
+  roles:
+    - role: xanmanning.k3s
+    - role: k3s/config_fetch
+    - role: k3s/secrets
+    - role: k3s/flux

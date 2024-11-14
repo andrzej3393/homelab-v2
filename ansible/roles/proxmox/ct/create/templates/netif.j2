@@ -1,0 +1,3 @@
+{% for vlan in configure_vlans %}
+net{{ loop.index0 }}: "name=eth{{ loop.index0 }},bridge=vmbr0,tag={{ vlan }},ip={{ network_cidr | ansible.utils.ipsubnet(24, vlan) | ansible.utils.ipaddr(network_host) }}{% if vlan in network_vlans_with_gw %},gw={{ network_cidr | ansible.utils.ipsubnet(24, vlan) | ansible.utils.ipaddr("1") | ansible.utils.ipaddr("address") }}{% endif %}"
+{% endfor %}

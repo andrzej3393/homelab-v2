@@ -1,0 +1,54 @@
+network_host: 22
+ansible_user: andrzej3393
+ansible_password: "{{ lookup('community.general.onepassword', 'Playground', vault='Homelab', section='andrzej3393', field='password') }}"
+ansible_become_password: "{{ ansible_password }}"
+
+configure_vlans:
+  - "{{ network_vlans.management }}"
+  - "{{ network_vlans.nfs }}"
+
+domains_host:
+  - record: "mgmt.{{ inventory_hostname }}"
+    value: "{{ network_cidr | ansible.utils.ipsubnet(24, network_vlans.management) | ansible.utils.ipmath(network_host) }}"
+    type: "A"
+  - record: "nfs.{{ inventory_hostname }}"
+    value: "{{ network_cidr | ansible.utils.ipsubnet(24, network_vlans.nfs) | ansible.utils.ipmath(network_host) }}"
+    type: "A"
+
+users:
+  - login: "root"
+    password: "{{ lookup('community.general.onepassword', 'NAS', vault='Homelab', section='root', field='password') }}"
+    ssh_public_keys: "{{ ssh_public_keys }}"
+  - login: "andrzej3393"
+    password: "{{ lookup('community.general.onepassword', 'NAS', vault='Homelab', section='andrzej3393', field='password') }}"
+    ssh_public_keys: "{{ ssh_public_keys }}"
+    passwordless_sudo: true
+  - login: "media"
+    shell: /usr/sbin/nologin
+    uid: 3000
+    gid: 3000
+
+proxmox_ct_root_password: "{{ lookup('community.general.onepassword', 'NAS', vault='Homelab', section='root', field='password') }}"
+proxmox_ct_memory: 1024
+proxmox_ct_cores: 1
+proxmox_ct_disk: 10
+proxmox_ct_nesting: true
+proxmox_ct_unprivileged: false
+proxmox_vmid: 100
+
+zfs_mountpoints:
+  - src: "/hdd/backups"
+    dst: "/mnt/hdd/backups"
+  - src: "/hdd/gdrive"
+    dst: "/mnt/hdd/gdrive"
+  - src: "/hdd/media"
+    dst: "/mnt/hdd/media"
+  - src: "/ssd/k3s-stable"
+    dst: "/mnt/ssd/k3s-stable"
+  - src: "/ssd/k3s-experimental"
+    dst: "/mnt/ssd/k3s-experimental"
+
+nfs_exports:
+  - "/mnt/hdd/media *(rw,sync,no_subtree_check,all_squash,anonuid=3000,anongid=3000)"
+  - "/mnt/ssd/k3s-stable *(rw,sync,no_subtree_check,no_root_squash)"
+  - "/mnt/ssd/k3s-experimental *(rw,sync,no_subtree_check,no_root_squash)"

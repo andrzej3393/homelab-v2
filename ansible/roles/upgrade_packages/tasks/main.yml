@@ -1,0 +1,7 @@
+- name: Figure out platform
+  ansible.builtin.set_fact:
+    upgrade_packages_platform: "{{ ansible_os_family | lower }}"
+  when: upgrade_packages_platform is not defined
+
+- name: Include tasks for a platform
+  include_tasks: "{{ upgrade_packages_platform }}.yml"

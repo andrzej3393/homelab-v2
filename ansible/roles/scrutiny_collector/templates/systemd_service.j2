@@ -1,0 +1,10 @@
+[Unit]
+Description=Scrutiny Collector
+Wants={{ scrutiny_collector_cronjob_name }}.timer
+
+[Service]
+type=oneshot
+ExecStart={{ scrutiny_collector_command }}
+
+[Install]
+WantedBy=multi-user.target

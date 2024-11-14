@@ -1,0 +1,7 @@
+- name: Set up OPNsense
+  hosts: opnsense
+  gather_facts: false
+
+  roles:
+    - role: healthchecks_io
+    - role: upgrade_packages

@@ -1,0 +1,49 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+## history
+HISTFILE=~/.histfile
+HISTSIZE=100000
+SAVEHIST=100000
+setopt hist_expire_dups_first
+setopt inc_append_history
+setopt share_history
+
+## compinit
+autoload -Uz compinit
+compinit
+
+## antidote
+if ! [[ -e ${ZDOTDIR:-~}/.antidote ]]; then
+  git clone https://github.com/mattmc3/antidote.git ${ZDOTDIR:-~}/.antidote
+fi
+source ${ZDOTDIR:-~}/.antidote/antidote.zsh
+
+# ohmyzsh magic
+antidote bundle ohmyzsh/ohmyzsh kind:clone
+ZSH=$(antidote path ohmyzsh/ohmyzsh)
+if [[ -z "$ZSH_CACHE_DIR" ]]; then
+  ZSH_CACHE_DIR="$ZSH/cache"
+fi
+mkdir -p "$ZSH_CACHE_DIR/completions"
+
+antidote load
+
+## auto rehash
+zstyle ":completion:*:commands" rehash 1
+
+## aliases
+alias ls='ls -lh --color=auto'
+alias groot='cd $(git root)'
+
+## vars
+export EDITOR="nano"
+export PATH=$PATH:~/.local/bin
+
+## promptinit
+autoload -Uz promptinit && promptinit && prompt powerlevel10k
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

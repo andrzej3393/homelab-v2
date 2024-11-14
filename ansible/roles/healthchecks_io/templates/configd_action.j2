@@ -1,0 +1,6 @@
+[ping]
+command:/usr/local/bin/curl -fsS -m 10 --retry 5 -o /dev/null https://hc-ping.com/{{ healthchecks_io_check_info.uuid }}
+parameters:
+type:script
+message:{{ healthchecks_io_cronjob_name }}
+description:{{ healthchecks_io_cronjob_name }}

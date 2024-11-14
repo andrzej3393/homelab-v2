@@ -1,0 +1,43 @@
+- name: Find out proper group for created files
+  ansible.builtin.set_fact:
+    scrutiny_collector_files_group: "{% if scrutiny_collector_platform == 'opnsense' %}wheel{% else %}root{% endif %}"
+
+- name: Install smartmontools
+  ansible.builtin.package:
+    name: smartmontools
+    state: present
+  become: true
+  when: scrutiny_collector_platform != "truenas"
+
+- name: Download scrutiny-collector binary
+  ansible.builtin.get_url:
+    url: "https://github.com/AnalogJ/scrutiny/releases/download/{{ scrutiny_collector_version }}/scrutiny-collector-metrics-{{ scrutiny_collector_os_arch }}"
+    dest: "/usr/local/bin/scrutiny-collector"
+    mode: "0755"
+    owner: root
+    group: "{{ scrutiny_collector_files_group }}"
+  become: true
+  retries: 5
+
+- name: Get smartctl binary path
+  ansible.builtin.command: "which smartctl"
+  register: scrutiny_collector_smartctl_binary_path
+  changed_when: false
+  become: true
+
+- name: Create scrutiny-collector config
+  ansible.builtin.template:
+    src: scrutiny-collector.yaml.j2
+    dest: /etc/scrutiny-collector.yaml
+    mode: "0644"
+    owner: root
+    group: "{{ scrutiny_collector_files_group }}"
+  become: true
+
+- name: Run initial scrutiny-collector # noqa command-instead-of-shell
+  ansible.builtin.shell: "/usr/local/bin/scrutiny-collector run --config /etc/scrutiny-collector.yaml"
+  become: true
+  changed_when: false
+
+- name: Include tasks for a chosen platform
+  include_tasks: "{{ scrutiny_collector_platform }}.yml"

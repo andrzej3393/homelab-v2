@@ -1,0 +1,22 @@
+- name: Configure /etc/network/interfaces
+  template:
+    src: interfaces.j2
+    dest: /etc/network/interfaces
+    owner: root
+    group: root
+    mode: "0644"
+  register: _configure_interfaces
+
+- name: Reboot if network interfaces configuration changed
+  when: _configure_interfaces is changed
+  block:
+    - name: Reboot the server
+      reboot:
+        msg: "Reboot initiated by Ansible"
+        reboot_timeout: 600
+        pre_reboot_delay: 5
+
+    - name: Wait for server to come back online
+      wait_for_connection:
+        delay: 5
+        timeout: 600

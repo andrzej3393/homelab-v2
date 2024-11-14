@@ -1,0 +1,3 @@
+{% for vlan in configure_vlans %}
+net{{ loop.index0 }}: 'virtio,bridge=vmbr0,firewall=1,tag={{ vlan }}'
+{% endfor %}

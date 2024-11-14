@@ -1,0 +1,10 @@
+- name: Get existing plugins
+  become: true
+  command: "pvesh get /cluster/acme/plugins --output-format json"
+  register: _pve_acme_plugins
+  changed_when: false
+
+- name: "Create plugin {{ pve_acme_plugin.name }}({{ pve_acme_plugin.api }}) of type {{ pve_acme_plugin.type }}"
+  become: true
+  command: "pvesh create /cluster/acme/plugins -type {{ pve_acme_plugin.type }} -id {{ pve_acme_plugin.name }} -api {{ pve_acme_plugin.api }} -data {{ pve_acme_plugin.data | b64encode }} --output-format json"
+  when: not (_pve_acme_plugins.stdout | from_json | json_query('[?plugin==`' + pve_acme_plugin.name + '`] | [0]'))

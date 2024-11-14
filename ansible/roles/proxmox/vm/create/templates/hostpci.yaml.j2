@@ -1,0 +1,5 @@
+{% for pci_dev in proxmox_vm_pci_devices %}
+hostpci{{ loop.index0 }}: '{{ pci_dev }}'
+{% else %}
+{}
+{% endfor %}

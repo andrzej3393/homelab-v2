@@ -1,0 +1,25 @@
+- name: Check if updates required
+  community.network.routeros_command:
+    commands: /system package update check-for-updates
+  register: upgrade_packages_check_result
+  changed_when: false
+
+- name: Update packages
+  when: upgrade_packages_check_result.stdout[0].find('New version is available') > 0
+  block:
+    - name: Download updates
+      community.network.routeros_command:
+        commands: /system package update download
+
+    - name: Install updates
+      community.network.routeros_command:
+        commands: /system package update install
+      notify: Remind about firmware upgrade
+
+    - name: Wait for router to reboot
+      ansible.builtin.wait_for:
+        host: "{{ ansible_host }}"
+        port: 22
+        state: started
+        delay: 10
+        timeout: 600

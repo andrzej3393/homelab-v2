@@ -1,0 +1,10 @@
+[Unit]
+Description={{ healthchecks_io_cronjob_name }}
+
+[Timer]
+Unit={{ healthchecks_io_cronjob_name }}.service
+OnBootSec=15s
+OnUnitActiveSec={{ healthchecks_io_interval_minutes }}m
+
+[Install]
+WantedBy=timers.target

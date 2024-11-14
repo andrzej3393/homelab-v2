@@ -1,0 +1,18 @@
+homelab:
+  hosts:
+    opnsense:
+  children:
+    proxmoxes:
+      hosts:
+        proxmox:
+    proxmox_workloads:
+      children:
+        vm:
+          hosts:
+            playground-vm:
+            k3s-stable:
+            k3s-experimental:
+        lxc:
+          hosts:
+            playground-ct:
+            nas:

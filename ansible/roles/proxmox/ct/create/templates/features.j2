@@ -1,0 +1,4 @@
+- "nesting={{ 1 if proxmox_ct_nesting | default(true) else 0 }}"
+{% if proxmox_ct_nfs | default(false) %}
+- "mount=nfs"
+{% endif %}

@@ -1,0 +1,16 @@
+- name: Boot refresh
+  become: true
+  command: "proxmox-boot-tool refresh"
+  notify: Reboot
+
+- name: Reboot
+  become: true
+  reboot:
+    msg: "Reboot initiated by Ansible"
+    reboot_timeout: 600
+    pre_reboot_delay: 5
+
+- name: Update initramfs
+  become: true
+  command: "update-initramfs -u -k all"
+  notify: Reboot

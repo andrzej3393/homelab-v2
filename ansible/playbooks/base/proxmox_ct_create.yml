@@ -1,0 +1,42 @@
+- name: CT provisioning
+  hosts: "{{ ct_hosts }}"
+  gather_facts: false
+  serial: 1
+
+  roles:
+    - role: proxmox/ct/create
+
+- name: Initial container setup
+  hosts: "{{ ct_hosts }}"
+  strategy: free
+
+  vars:
+    ansible_user: root
+    ansible_password: "{{ proxmox_ct_root_password }}"
+
+  gather_facts: false
+  pre_tasks:
+    - name: Try to connect as root
+      ping:
+      ignore_unreachable: true
+      register: ping_result
+    - name: Stop play
+      meta: end_host
+      when: ping_result is not defined or ping_result.ping is not defined or ping_result.ping != 'pong'
+    - name: Collect facts
+      setup:
+
+  roles:
+    - role: system/users
+    - role: system/sshd
+
+- name: Container setup
+  hosts: "{{ ct_hosts }}"
+  strategy: free
+
+  roles:
+    - role: system/hostname
+    - role: geerlingguy.ntp
+      become: true
+    - role: system/users
+    - role: system/sshd

@@ -1,0 +1,37 @@
+# {{ ansible_managed }}
+auto lo
+iface lo inet loopback
+
+iface enxbe3af2b6059f inet manual
+
+{% for i in range(1, 5) %}
+allow-hotplug eno{{ i }}
+iface eno{{ i }} inet manual
+
+{% endfor %}
+
+auto bond0
+iface bond0 inet manual
+    bond-slaves {% for i in range(1, 5) %}eno{{ i }} {% endfor %}
+
+    bond-miimon 100
+    bond-mode 802.3ad
+    bond-xmit-hash-policy layer2+3
+
+auto vmbr0
+iface vmbr0 inet manual
+    bridge-ports bond0
+    bridge-stp off
+    bridge-fd 0
+    bridge-vlan-aware yes
+    bridge-vids 2-4094
+
+{% for vlan in configure_vlans %}
+auto vmbr0.{{ vlan }}
+iface vmbr0.{{ vlan }} inet static
+    address {{ network_cidr | ansible.utils.ipsubnet(24, vlan) | ansible.utils.ipmath(network_host) }}/24
+{% if vlan == gateway_vlan %}
+    gateway {{ network_cidr | ansible.utils.ipsubnet(24, vlan) | ansible.utils.ipmath(network_gateway_host) }}
+{% endif %}
+
+{% endfor %}

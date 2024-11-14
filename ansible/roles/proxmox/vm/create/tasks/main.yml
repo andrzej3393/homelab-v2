@@ -1,0 +1,113 @@
+- name: Create new VM
+  delegate_to: localhost
+  community.general.proxmox_kvm:
+    api_host: "{{ proxmox_api_host }}"
+    api_user: "{{ proxmox_api_user }}"
+    api_password: "{{ proxmox_api_password }}"
+
+    node: "{{ proxmox_node }}"
+    name: "{{ proxmox_vm_name }}"
+    vmid: "{{ proxmox_vmid }}"
+
+    bios: ovmf
+    machine: q35
+    kvm: true
+    agent: true
+    autostart: true
+    onboot: true
+
+    cpu: host
+    cores: "{{ proxmox_vm_cores }}"
+    sockets: 1
+    memory: "{{ proxmox_vm_memory }}"
+    balloon: 0
+    hostpci: "{{ lookup('template', 'hostpci.yaml.j2') | from_yaml }}"
+
+    ciuser: "{{ ansible_user }}"
+    cipassword: "{{ ansible_password }}"
+    sshkeys: "{{ proxmox_vm_root_ssh_key }}"
+    tags: "{{ proxmox_vm_default_tags + proxmox_vm_create_tags }}"
+
+    ipconfig: "{{ lookup('template', 'ipconfig.yaml.j2') | from_yaml }}"
+    net: "{{ lookup('template', 'net.yaml.j2') | from_yaml }}"
+
+    ostype: l26
+    boot: "order=scsi0"
+    efidisk0:
+      storage: "{{ proxmox_data_storage_name }}"
+      format: raw
+      efitype: 4m
+      pre_enrolled_keys: false
+    scsihw: virtio-scsi-single
+    scsi:
+      scsi0: "{{ proxmox_data_storage_name }}:0,iothread=1,discard=on,import-from={{ proxmox_debian_path }},format=raw"
+    ide:
+      ide2: "{{ proxmox_data_storage_name }}:cloudinit,format=raw"
+
+    vga: std
+    timeout: 500
+
+  register: vm_create_result
+  until: vm_create_result.changed == true
+
+- name: Refresh dynamic inventory
+  delegate_to: localhost
+  meta: refresh_inventory
+
+- name: Grow VM disk
+  delegate_to: localhost
+  community.general.proxmox_disk:
+    api_host: "{{ proxmox_api_host }}"
+    api_user: "{{ proxmox_api_user }}"
+    api_password: "{{ proxmox_api_password }}"
+    vmid: "{{ proxmox_vmid }}"
+    disk: scsi0
+    size: "{{ proxmox_vm_disk }}G"
+    state: resized
+    timeout: 500
+
+- name: Start VM
+  delegate_to: localhost
+  community.general.proxmox_kvm:
+    api_host: "{{ proxmox_api_host }}"
+    api_user: "{{ proxmox_api_user }}"
+    api_password: "{{ proxmox_api_password }}"
+    node: "{{ proxmox_node }}"
+    vmid: "{{ hostvars[proxmox_vm_name].proxmox_vmid }}"
+    state: started
+    timeout: 500
+
+- name: Wait for SSH to be available
+  delegate_to: localhost
+  ansible.builtin.wait_for:
+    port: 22
+    host: "{{ ansible_host }}"
+    state: started
+    timeout: 5000
+
+- name: Wait for cloud init to finish
+  community.general.cloud_init_data_facts:
+    filter: status
+  register: res
+  until: "res.cloud_init_data_facts.status.v1.stage is defined and not res.cloud_init_data_facts.status.v1.stage"
+  retries: 50
+  delay: 5
+
+- name: Install qemu guest agent
+  become: true
+  ansible.builtin.package:
+    name: qemu-guest-agent
+    state: present
+    update_cache: true
+    install_recommends: false
+
+- name: Enable qemu guest agent
+  become: true
+  ansible.builtin.service:
+    name: qemu-guest-agent
+    enabled: true
+    state: started
+
+- name: Reboot VM
+  become: true
+  ansible.builtin.reboot:

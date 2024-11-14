@@ -1,0 +1,5 @@
+- name: Restart configd service
+  ansible.builtin.service:
+    name: configd
+    state: restarted
+  become: true

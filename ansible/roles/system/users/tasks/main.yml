@@ -1,0 +1,23 @@
+- name: Install sudo
+  ansible.builtin.package:
+    name: sudo
+    state: present
+  become: true
+
+- name: Setup user
+  include_tasks: user.yml
+  loop: "{{ users }}"
+  loop_control:
+    loop_var: user
+    label: "{{ user.login }}"
+  vars:
+    users_user_login: "{{ user.login }}"
+    users_user_password: "{{ (user.password | password_hash('sha512')) if user.password is defined else omit }}"
+    users_user_groups: "{{ user.groups | default(omit) }}"
+    users_user_ssh_public_keys: "{{ user.ssh_public_keys | default([]) }}"
+    users_user_state: "{{ user.state | default('present') }}"
+    users_user_passworded_sudo: "{{ user.passworded_sudo | default(false) }}"
+    users_user_passwordless_sudo: "{{ user.passwordless_sudo | default(false) }}"
+    users_user_shell: "{{ user.shell | default('/bin/zsh') }}"
+    users_user_uid: "{{ user.uid | default(omit) }}"
+    users_user_gid: "{{ user.gid | default(omit) }}"

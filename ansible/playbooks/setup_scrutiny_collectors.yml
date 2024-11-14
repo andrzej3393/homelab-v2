@@ -1,0 +1,7 @@
+- name: Set up Scrutiny collectors
+  hosts:
+    - proxmox
+    - opnsense
+
+  roles:
+    - role: scrutiny_collector

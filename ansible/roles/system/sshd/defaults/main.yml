@@ -1,0 +1,2 @@
+system_sshd_password_authentication: false
+system_sshd_permit_root_login: false

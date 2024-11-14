@@ -1,0 +1,47 @@
+- name: "Get existing groups"
+  ansible.builtin.getent:
+    database: group
+
+- name: "{{ 'Create' if getent_group[user.login] is not defined else 'Update' }} group '{{ user.login }}'"
+  ansible.builtin.group:
+    name: "{{ users_user_login }}"
+    state: "{{ users_user_state }}"
+    gid: "{{ users_user_gid | default(omit) }}"
+  become: true
+
+- name: "Get existing users"
+  ansible.builtin.getent:
+    database: passwd
+
+- name: "{{ 'Create' if getent_passwd[user.login] is not defined else 'Update' }} user '{{ users_user_login }}'"
+  ansible.builtin.user:
+    name: "{{ users_user_login }}"
+    append: "{{ true if user.groups is defined else omit }}"
+    group: "{{ users_user_login }}"
+    groups: "{{ users_user_groups }}"
+    password: "{{ users_user_password | default(lookup('ansible.builtin.password', '/dev/null', seed=inventory_hostname)) }}"
+    state: "{{ users_user_state }}"
+    shell: "{{ users_user_shell }}"
+    uid: "{{ users_user_uid | default(omit) }}"
+  become: true
+  register: users_created_user
+
+- name: "Add SSH public keys for user {{ users_user_login }}"
+  ansible.posix.authorized_key:
+    user: "{{ users_user_login }}"
+    key: "{{ item }}"
+  loop: "{{ users_user_ssh_public_keys }}"
+  become: "{{ (ansible_user != users_user_login) | bool }}"
+
+- name: "Manage user {{ users_user_login }} sudoers"
+  ansible.builtin.lineinfile:
+    dest: /etc/sudoers
+    regexp: "^{{ users_user_login }}"
+    line: "{{ users_user_login }} ALL=(ALL:ALL) {{ 'NOPASSWD: ' if users_user_passwordless_sudo }}ALL"
+    state: "{{ 'present' if users_user_state == 'present' and (users_user_passworded_sudo or users_user_passwordless_sudo) else 'absent' }}"
+    validate: /usr/sbin/visudo -cf %s
+  become: true
+
+- name: Setup ZSH
+  include_tasks: zsh.yml
+  when: '"zsh" in users_user_shell'

@@ -1,0 +1,10 @@
+_proxmox_debian_img_name: "debian-12-generic-amd64.qcow2"
+proxmox_debian_url: "https://cloud.debian.org/images/cloud/bookworm/latest/{{ _proxmox_debian_img_name }}"
+proxmox_debian_path: "/tmp/{{ _proxmox_debian_img_name }}"
+
+proxmox_vm_root_ssh_key: "{{ ssh_id_rsa_public_key }}"
+proxmox_vm_name: "{{ inventory_hostname }}"
+
+proxmox_vm_default_tags:
+  - ansible
+  - debian

@@ -1,0 +1,37 @@
+- name: Install curl
+  ansible.builtin.package:
+    name: curl
+    state: present
+  become: true
+
+- name: Run healthchecks.io ping periodically
+  block:
+    - name: Set cron entry
+      ansible.builtin.cron:
+        name: "{{ healthchecks_io_cronjob_name }}"
+        minute: "*/{{ healthchecks_io_interval_minutes }}"
+        job: "/usr/bin/curl -fsS -m 10 --retry 5 -o /dev/null https://hc-ping.com/{{ healthchecks_io_check_info.uuid }}"
+      become: true
+  rescue:
+    - name: Create systemd service file
+      ansible.builtin.template:
+        src: systemd_service.j2
+        dest: /etc/systemd/system/{{ healthchecks_io_cronjob_name }}.service
+        mode: "0644"
+        owner: root
+        group: root
+      become: true
+    - name: Create systemd timer file
+      ansible.builtin.template:
+        src: systemd_timer.j2
+        dest: /etc/systemd/system/{{ healthchecks_io_cronjob_name }}.timer
+        mode: "0644"
+        owner: root
+        group: root
+      become: true
+    - name: Enable & start systemd timer
+      ansible.builtin.systemd:
+        name: "{{ healthchecks_io_cronjob_name }}.timer"
+        state: started
+        enabled: true
+      become: true

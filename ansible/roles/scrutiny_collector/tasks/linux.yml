@@ -1,0 +1,32 @@
+- name: Run scrutiny-collector periodically
+  block:
+    - name: Set cron entry
+      ansible.builtin.cron:
+        name: "{{ scrutiny_collector_cronjob_name }}"
+        hour: "*/{{ scrutiny_collector_interval_hours }}"
+        minute: "0"
+        job: "{{ scrutiny_collector_command }}"
+      become: true
+  rescue:
+    - name: Create systemd service file
+      ansible.builtin.template:
+        src: systemd_service.j2
+        dest: /etc/systemd/system/{{ scrutiny_collector_cronjob_name }}.service
+        mode: "0644"
+        owner: root
+        group: root
+      become: true
+    - name: Create systemd timer file
+      ansible.builtin.template:
+        src: systemd_timer.j2
+        dest: /etc/systemd/system/{{ scrutiny_collector_cronjob_name }}.timer
+        mode: "0644"
+        owner: root
+        group: root
+      become: true
+    - name: Enable & start systemd timer
+      ansible.builtin.systemd:
+        name: "{{ scrutiny_collector_cronjob_name }}.timer"
+        state: started
+        enabled: true
+      become: true

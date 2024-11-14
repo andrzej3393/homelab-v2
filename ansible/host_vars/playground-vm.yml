@@ -1,0 +1,23 @@
+network_host: 20
+ansible_user: andrzej3393
+ansible_password: "{{ lookup('community.general.onepassword', 'Playground', vault='Homelab', section='andrzej3393', field='password') }}"
+ansible_become_password: "{{ ansible_password }}"
+
+configure_vlans:
+  - "{{ network_vlans.management }}"
+
+users:
+  - login: "root"
+    password: "{{ lookup('community.general.onepassword', 'Playground', vault='Homelab', section='root', field='password') }}"
+    ssh_public_keys: "{{ ssh_public_keys }}"
+  - login: "andrzej3393"
+    password: "{{ lookup('community.general.onepassword', 'Playground', vault='Homelab', section='andrzej3393', field='password') }}"
+    ssh_public_keys: "{{ ssh_public_keys }}"
+    passwordless_sudo: true
+
+proxmox_node: vengerberg
+proxmox_vm_memory: 1024
+proxmox_vm_cores: 1
+proxmox_vm_disk: 20
+proxmox_vm_enable_ha: true
+proxmox_vmid: 300

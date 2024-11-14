@@ -1,0 +1,68 @@
+ansible_user: root
+ansible_password: "{{ lookup('community.general.onepassword', 'Proxmox root', vault='Homelab', field='password') }}"
+
+gateway_vlan: "{{ network_vlans.management }}"
+configure_vlans:
+  - "{{ network_vlans.management }}"
+
+system_sshd_permit_root_login: true
+
+cluster_name: proxmoxes
+
+healthchecks_io_platform: linux
+scrutiny_collector_platform: linux
+
+# Both users & pve_users defined here because different roles are doing different things and have different inputs
+users:
+  - login: root
+    ssh_public_keys: "{{ ssh_public_keys }}"
+    passworded_sudo: true
+  - login: andrzej3393
+    ssh_public_keys: "{{ ssh_public_keys }}"
+    passwordless_sudo: true
+
+pve_users:
+  - name: root@pam
+    email: "{{ lookup('community.general.onepassword', 'Emails', vault='Homelab', field='admin') }}"
+    password: "{{ lookup('community.general.onepassword', 'Proxmox root', vault='Homelab', field='password') }}"
+  - name: andrzej3393@pam
+    password: "{{ lookup('community.general.onepassword', 'Proxmox andrzej3393', vault='Homelab', field='password') }}"
+  - name: prometheus@pve
+    password: "{{ lookup('community.general.onepassword', 'Proxmox prometheus', vault='Homelab', field='password') }}"
+  - name: homepage@pve
+    password: "{{ lookup('community.general.onepassword', 'Proxmox homepage', vault='Homelab', field='password') }}"
+    token: homepage
+pve_acls:
+  - path: /
+    roles:
+      - PVEAuditor
+    users:
+      - prometheus@pve
+      - homepage@pve
+
+pve_group: proxmoxes # inventory group name
+pve_reboot_on_kernel_update: true
+
+pve_acme_server: prod # prod or staging
+pve_acme_email: "{{ lookup('community.general.onepassword', 'Emails', vault='Homelab', field='admin') }}"
+pve_acme_plugin:
+  name: cloudflare
+  api: cf
+  type: dns
+  data: |
+    CF_Token={{ lookup('community.general.onepassword', 'Cloudflare', vault='Homelab', field='token') }}
+    CF_Account_ID={{ lookup('community.general.onepassword', 'Cloudflare', vault='Homelab', field='account_id') }}
+
+pve_cluster_enabled: false
+
+pve_zfs_enabled: true
+pve_zfs_create_volumes:
+  - hdd/media
+  - hdd/backups
+  - hdd/gdrive
+  - ssd/k3s-stable-pv
+  - ssd/k3s-experimental-pv
+
+_proxmox_debian_img_name: "debian-12-generic-amd64.qcow2"
+proxmox_debian_url: "https://cloud.debian.org/images/cloud/bookworm/latest/{{ _proxmox_debian_img_name }}"
+proxmox_debian_path: "/tmp/{{ _proxmox_debian_img_name }}"

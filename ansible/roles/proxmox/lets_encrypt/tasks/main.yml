@@ -1,0 +1,10 @@
+- name: Create Let's Encrypt account
+  include_tasks: account.yml
+  when: inventory_hostname == groups[pve_group][0]
+
+- name: Create Let's Encrypt challenge plugin
+  include_tasks: challenge_plugin.yml
+  when: inventory_hostname == groups[pve_group][0]
+
+- name: Create certificates
+  include_tasks: cert.yml

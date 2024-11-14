@@ -1,0 +1,19 @@
+- name: Set node ACME settings
+  become: true
+  command: "pvesh set /nodes/{{ inventory_hostname }}/config -acme account={{ pve_acme_server }} -acmedomain0 {{ inventory_hostname }}.{{ homelab_domain }},plugin={{ pve_acme_plugin.name }} -acmedomain1 {{ cluster_name }}.{{ homelab_domain }},plugin={{ pve_acme_plugin.name }} --output-format json"
+
+- name: Order ACME certificates
+  become: true
+  throttle: 1
+  command: "pvesh create /nodes/{{ inventory_hostname }}/certificates/acme/certificate --output-format json"
+  register: _pve_acme_order
+  failed_when: false
+  changed_when: _pve_acme_order.rc == 0
+
+- name: Renew ACME certificates
+  become: true
+  throttle: 1
+  command: "pvesh set /nodes/{{ inventory_hostname }}/certificates/acme/certificate --output-format json"
+  register: _pve_acme_renew
+  failed_when: false
+  changed_when: _pve_acme_renew.rc == 0

@@ -1,0 +1,6 @@
+/collections/ansible_collections/
+/roles/geerlingguy.ntp/
+/roles/lae.proxmox/
+/roles/geerlingguy.node_exporter/
+/roles/xanmanning.k3s/
+/roles/geerlingguy.nfs/

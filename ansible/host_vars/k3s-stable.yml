@@ -1,0 +1,42 @@
+ansible_user: andrzej3393
+ansible_password: "{{ lookup('community.general.onepassword', 'k3s-stable', vault='Homelab', section='andrzej3393', field='password') }}"
+
+users:
+  - login: "root"
+    password: "{{ lookup('community.general.onepassword', 'k3s-stable', vault='Homelab', section='root', field='password') }}"
+    ssh_public_keys: "{{ ssh_public_keys }}"
+  - login: "andrzej3393"
+    password: "{{ lookup('community.general.onepassword', 'k3s-stable', vault='Homelab', section='andrzej3393', field='password') }}"
+    ssh_public_keys: "{{ ssh_public_keys }}"
+    passwordless_sudo: true
+
+network_host: 23
+configure_vlans:
+  - "{{ network_vlans.management }}"
+  - "{{ network_vlans.services }}"
+  - "{{ network_vlans.nfs }}"
+
+proxmox_vmid: 101
+proxmox_vm_memory: 65536
+proxmox_vm_cores: 8
+proxmox_vm_disk: 200
+proxmox_vm_create_tags:
+  - k3s
+  - k3s-master
+proxmox_vm_pci_devices:
+  - "host=0000:18:00,pcie=true"
+
+# renovate: datasource=github-releases depName=k3s-io/k3s
+k3s_release_version: "v1.30.2+k3s1"
+k3s_install_hard_links: true
+k3s_become: true
+k3s_management_interface: eth0
+k3s_server:
+  disable:
+    - traefik
+    - servicelb
+  tls-san: "{{ ansible_host }}"
+  node-ip: "{{ ansible_host }}"
+  flannel-iface: eth0
+
+nvidia_driver_version: "550.100"

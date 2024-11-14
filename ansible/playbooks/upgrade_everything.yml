@@ -1,0 +1,19 @@
+- name: Upgrade packages on Proxmox, server by server
+  hosts: proxmox
+  serial: 1
+
+  roles:
+    - role: upgrade_packages
+
+- name: Upgrade packages on containers & VMs
+  hosts: lxc, vm
+  serial: 1
+
+  roles:
+    - role: upgrade_packages
+
+- name: Upgrade OPNsense
+  hosts: opnsense
+
+  roles:
+    - role: upgrade_packages

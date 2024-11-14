@@ -1,0 +1,75 @@
+gateway_vlan: "{{ network_vlans.management }}"
+
+timezone: Europe/Warsaw
+
+ntp_manage_config: true
+ntp_timezone: "{{ timezone }}"
+ntp_area: pl
+
+network_cidr: 10.93.0.0/16
+network_gateway_host: 1
+network_vlans:
+  default: 1
+  clients: 10
+  management: 20
+  services: 30
+  guest: 40
+  nfs: 82
+network_vlans_with_gw:
+  - "{{ network_vlans.clients }}"
+  - "{{ network_vlans.management }}"
+  - "{{ network_vlans.services }}"
+  - "{{ network_vlans.guest }}"
+
+homelab_domain: "{{ lookup('community.general.onepassword', 'Cloudflare', vault='Homelab', field='zone') }}"
+domains_host:
+  - record: "{{ inventory_hostname }}"
+    value: "{{ ansible_host }}"
+    type: "A"
+domains_static:
+  - record: printer
+    value: "10.93.10.11"
+    type: "A"
+  - record: bmc
+    value: "10.93.20.4"
+    type: "A"
+  - record: switch
+    value: "10.93.20.2"
+    type: "A"
+  - record: ap
+    value: "10.93.20.3"
+    type: "A"
+  # resend
+  - record: send
+    value: "feedback-smtp.us-east-1.amazonses.com"
+    type: "MX"
+    extras:
+      priority: 10
+  - record: send
+    value: "v=spf1 include:amazonses.com ~all"
+    type: "TXT"
+  - record: "resend._domainkey"
+    value: "p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDZV/HgFa5TNLuuab+ZxJUHbUlbvb9RelQcMrCDYLmzT9zhD8FyUHfZTcpjp5R4pVNAelv/n4Ml6WrYJdLbhbrJEbbdj3T8LjoQMeREUqEDr7oPY0zTv1qSmM9oXxoNsW9gz/wG6MLd32vf1owWA3xncy3IfwIdrJRTlKwq1S40oQIDAQAB"
+    type: "TXT"
+
+dns_nameservers:
+  - "{{ hostvars['opnsense'].ansible_host }}"
+  - 1.1.1.1
+
+ssh_id_rsa_public_key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+ssh_id_ed25519_public_key: "{{ lookup('file', '~/.ssh/id_ed25519.pub') }}"
+ssh_public_keys:
+  - "{{ ssh_id_rsa_public_key }}"
+  - "{{ ssh_id_ed25519_public_key }}"
+
+healthchecks_io_check_name: "{{ inventory_hostname }}.{{ homelab_domain }}"
+healthchecks_io_channels_names:
+  - Pushover
+  - Slack
+healthchecks_io_interval_minutes: 5
+
+# renovate: datasource=github-releases depName=AnalogJ/scrutiny
+scrutiny_collector_version: "v0.8.1"
+scrutiny_collector_api_endpoint: "https://scrutiny.{{ homelab_domain }}"
+scrutiny_collector_interval_hours: 1
+scrutiny_collector_os_arch: "linux-amd64"

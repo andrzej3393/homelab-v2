@@ -1,0 +1,61 @@
+- name: VM setup
+  import_playbook: base/proxmox_vm_create.yml
+  vars:
+    vm_hosts: k3s-experimental
+
+- name: Install nfs-common
+  hosts: k3s-experimental
+  tasks:
+    - name: Install packages
+      apt:
+        update_cache: true
+        name: nfs-common
+        state: present
+      become: true
+
+- name: Install non-free-firmware
+  hosts: k3s-experimental
+  tasks:
+    - name: Enable non-free-firmware repos
+      replace:
+        path: /etc/apt/sources.list.d/debian.sources
+        regexp: "^Components:.*$"
+        replace: "Components: main non-free-firmware"
+      become: true
+    - name: Install packages
+      apt:
+        update_cache: true
+        name: firmware-misc-nonfree
+        state: present
+      become: true
+
+- name: Deploy K3S
+  hosts: k3s-experimental
+  roles:
+    - role: xanmanning.k3s
+
+- name: Fetch K3S config
+  hosts: k3s-experimental
+  gather_facts: false
+  roles:
+    - role: k3s/config_fetch
+
+- name: Deploy core K3S secrets
+  hosts: k3s-experimental
+  gather_facts: false
+
+  roles:
+    - role: k3s/secrets
+
+- name: Setup Cilium
+  hosts: k3s-experimental
+
+  roles:
+    - k3s/cilium
+
+- name: Deploy Flux
+  hosts: k3s-experimental
+  gather_facts: false
+
+  roles:
+    - role: k3s/flux

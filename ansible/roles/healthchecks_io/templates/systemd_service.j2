@@ -1,0 +1,10 @@
+[Unit]
+Description=Healthchecks.io ping
+Wants={{ healthchecks_io_cronjob_name }}.timer
+
+[Service]
+type=oneshot
+ExecStart=/usr/bin/curl -fsS -m 10 --retry 5 -o /dev/null https://hc-ping.com/{{ healthchecks_io_check_info.uuid }}
+
+[Install]
+WantedBy=multi-user.target

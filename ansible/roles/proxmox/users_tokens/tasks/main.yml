@@ -1,0 +1,4 @@
+- name: Create users tokens
+  include_tasks: user_token.yml
+  when: inventory_hostname == groups[pve_group][0]
+  with_items: "{{ pve_users | selectattr('token', 'defined') }}"

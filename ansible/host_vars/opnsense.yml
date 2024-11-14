@@ -1,0 +1,14 @@
+ansible_user: "{{ lookup('community.general.onepassword', 'OPNsense andrzej3393', vault='Homelab', field='username') }}"
+ansible_password: "{{ lookup('community.general.onepassword', 'OPNsense andrzej3393', vault='Homelab', field='password') }}"
+ansible_become_password: "{{ ansible_password }}"
+network_host: 1
+
+opnsense_firewall: "{{ ansible_host }}"
+opnsense_ssl_verify: false
+opnsense_api_key: "{{ lookup('community.general.onepassword', 'OPNsense', vault='Homelab', field='api_key') }}"
+opnsense_api_secret: "{{ lookup('community.general.onepassword', 'OPNsense', vault='Homelab', field='api_secret') }}"
+
+upgrade_packages_platform: opnsense
+healthchecks_io_platform: opnsense
+scrutiny_collector_platform: opnsense
+scrutiny_collector_os_arch: "freebsd-amd64"

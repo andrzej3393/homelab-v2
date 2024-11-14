@@ -1,0 +1,9 @@
+_proxmox_debian_template_name: debian-12-standard_12.2-1_amd64.tar.zst
+proxmox_debian_template_path: "{{ proxmox_template_storage_name }}:vztmpl/{{ _proxmox_debian_template_name }}"
+
+proxmox_ct_root_ssh_key: "{{ ssh_id_rsa_public_key }}"
+proxmox_ct_name: "{{ inventory_hostname }}"
+
+proxmox_ct_default_tags:
+  - ansible
+  - debian

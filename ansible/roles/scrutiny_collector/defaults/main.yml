@@ -1,0 +1,2 @@
+scrutiny_collector_cronjob_name: "scrutiny"
+scrutiny_collector_command: "/usr/local/bin/scrutiny-collector run --config /etc/scrutiny-collector.yaml  2>&1 | grep ERROR"

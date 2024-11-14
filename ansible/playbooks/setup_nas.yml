@@ -1,0 +1,56 @@
+- name: CT setup
+  import_playbook: base/proxmox_ct_create.yml
+  vars:
+    ct_hosts: "nas"
+
+- name: Mount ZFS shares
+  hosts: nas
+  tasks:
+    - name: Stop container
+      delegate_to: localhost
+      community.general.proxmox:
+        api_host: "{{ proxmox_api_host }}"
+        api_user: "{{ proxmox_api_user }}"
+        api_password: "{{ proxmox_api_password }}"
+        vmid: "{{ proxmox_vmid }}"
+        state: stopped
+
+    - name: Append mountpoints
+      delegate_to: "{{ proxmox_node }}"
+      become: true
+      ansible.builtin.lineinfile:
+        dest: "/etc/pve/lxc/{{ proxmox_vmid }}.conf"
+        regexp: "^mp{{ idx }}:"
+        line: "mp{{ idx }}:{{ item.src }},mp={{ item.dst }}"
+      loop: "{{ zfs_mountpoints }}"
+      loop_control:
+        index_var: idx
+
+    - name: Start container
+      delegate_to: localhost
+      community.general.proxmox:
+        api_host: "{{ proxmox_api_host }}"
+        api_user: "{{ proxmox_api_user }}"
+        api_password: "{{ proxmox_api_password }}"
+        vmid: "{{ proxmox_vmid }}"
+        state: started
+
+    - name: Chown mountpoints
+      become: true
+      ansible.builtin.file:
+        mode: "{{ item.mode }}"
+        owner: "{{ item.owner }}"
+        group: "{{ item.group }}"
+        path: "{{ item.path }}"
+        recurse: true
+      loop:
+        - path: /mnt/hdd/media
+          owner: media
+          group: media
+          mode: "0775"
+
+- name: Setup NFS
+  hosts: nas
+  become: true
+  roles:
+    - role: geerlingguy.nfs

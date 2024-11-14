@@ -1,0 +1,12 @@
+domains_host:
+  - record: "mgmt.{{ inventory_hostname }}"
+    value: "{{ network_cidr | ansible.utils.ipsubnet(24, network_vlans.management) | ansible.utils.ipmath(network_host) }}"
+    type: "A"
+
+proxmox_api_host: "{{ groups['proxmoxes'][0] }}.{{ homelab_domain }}"
+proxmox_api_user: "{{ hostvars[groups['proxmoxes'][0]].ansible_user }}@pam"
+proxmox_api_password: "{{ hostvars[groups['proxmoxes'][0]].ansible_password }}"
+proxmox_node: "{{ groups['proxmoxes'][0] }}"
+
+proxmox_data_storage_name: local-zfs
+proxmox_template_storage_name: local

@@ -1,0 +1,50 @@
+- name: Create container
+  delegate_to: localhost
+  community.general.proxmox:
+    api_host: "{{ proxmox_api_host }}"
+    api_user: "{{ proxmox_api_user }}"
+    api_password: "{{ proxmox_api_password }}"
+    node: "{{ proxmox_node }}"
+    hostname: "{{ proxmox_ct_name }}"
+    ostemplate: "{{ proxmox_debian_template_path }}"
+    disk: "{{ proxmox_ct_disk }}"
+    storage: "{{ proxmox_data_storage_name }}"
+    memory: "{{ proxmox_ct_memory }}"
+    cores: "{{ proxmox_ct_cores }}"
+    cpus: 1
+    cpuunits: 1000
+    state: present
+    onboot: true
+    netif: "{{ lookup('template', 'netif.j2') | from_yaml }}"
+    searchdomain: "{{ proxmox_ct_searchdomain | default(homelab_domain) }}"
+    password: "{{ proxmox_ct_root_password }}"
+    pubkey: "{{ ssh_id_rsa_public_key }}"
+    swap: 0
+    vmid: "{{ proxmox_vmid }}"
+    tags: "{{ proxmox_ct_default_tags + proxmox_ct_create_tags }}"
+    unprivileged: "{{ proxmox_ct_unprivileged | default(true) }}"
+    timeout: 300
+    features: "{{ lookup('template', 'features.j2') | from_yaml }}"
+  register: proxmox_ct_create
+
+- name: Refresh dynamic inventory
+  delegate_to: localhost
+  meta: refresh_inventory
+
+- name: Start container
+  delegate_to: localhost
+  community.general.proxmox:
+    api_host: "{{ proxmox_api_host }}"
+    api_user: "{{ proxmox_api_user }}"
+    api_password: "{{ proxmox_api_password }}"
+    node: "{{ proxmox_node }}"
+    vmid: "{{ hostvars[proxmox_ct_name].proxmox_vmid }}"
+    state: started
+
+- name: Wait for SSH to be available
+  delegate_to: localhost
+  ansible.builtin.wait_for:
+    port: 22
+    host: "{{ ansible_host }}"
+    state: started
+    timeout: 600

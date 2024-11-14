@@ -1,0 +1,4 @@
+- name: CT setup
+  import_playbook: base/proxmox_vm_create.yml
+  vars:
+    vm_hosts: "playground-vm"

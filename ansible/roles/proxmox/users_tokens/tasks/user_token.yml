@@ -1,0 +1,34 @@
+- name: "Check if specified token for user {{ item.name }} exists"
+  command: "pvesh get /access/users/{{ item.name }}/token/{{ item.token }} --output-format json"
+  register: _proxmox_user_token_exists
+  failed_when: false
+  changed_when: false
+
+- name: "Create and save token for user {{ item.name }}"
+  when: _proxmox_user_token_exists.rc != 0
+  block:
+    - name: "Create token for user {{ item.name }}"
+      command: "pvesh create /access/users/{{ item.name }}/token/{{ item.token }} -privsep false --output-format json"
+      register: _proxmox_user_token_created
+
+    - name: "Get token and token id from proxmox response"
+      ansible.builtin.set_fact:
+        _op_item_name: "Proxmox {{ item.name | split('@') | first }}"
+        _token_id: "{{ (_proxmox_user_token_created.stdout | from_json)['full-tokenid'] }}"
+        _secret: "{{ (_proxmox_user_token_created.stdout | from_json)['value'] }}"
+
+    - name: "Check if entry in 1p exists"
+      delegate_to: localhost
+      register: _op_check
+      command: "op item get '{{ _op_item_name }}' --vault Homelab"
+      failed_when: false
+      changed_when: false
+#    - name: "Update entry in 1p"
+#      delegate_to: localhost
+#      command: "op item edit '{{ _op_item_name }}' --vault Homelab 'token_id={{ _token_id }}' 'secret={{ _secret }}'"
+#      when: _op_check.rc == 0
+#
+#    - name: "Create entry in 1p" # This doesn't work right now, probably op flaw
+#      delegate_to: localhost
+#      command: "op item create --title='{{ _op_item_name }}' --vault='Homelab' --category='login' 'token_id={{ _token_id }}' 'secret={{ _secret }}'"
+#      when: _op_check.rc != 0

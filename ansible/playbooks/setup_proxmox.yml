@@ -1,0 +1,35 @@
+- name: Set up Proxmox
+  hosts: proxmoxes
+
+  roles:
+    - role: proxmox/networking
+    - role: system/users
+    - role: system/sshd
+    - role: lae.proxmox
+    - role: proxmox/lets_encrypt
+    - role: proxmox/users_tokens
+    - role: proxmox/pci_passthrough
+    - role: healthchecks_io
+
+  tasks:
+    - name: Install required packages
+      ansible.builtin.apt:
+        pkg:
+          - fwupd
+          - software-properties-common
+          - grub-efi-amd64
+        update_cache: true
+        state: present
+      become: true
+    - name: Enable non-free-firmware repos
+      ansible.builtin.command: "apt-add-repository -yn non-free-firmware"
+      become: true
+      register: non_free_firmware_repo
+      changed_when: '"Added" in non_free_firmware_repo.stdout'
+    - name: Install microcode package
+      ansible.builtin.apt:
+        pkg:
+          - intel-microcode
+        state: present
+        update_cache: true
+      become: true

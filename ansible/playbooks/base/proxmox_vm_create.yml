@@ -1,0 +1,32 @@
+- hosts: proxmox
+  tasks:
+    - name: Check if Debian cloud-init file exists
+      stat:
+        path: "{{ proxmox_debian_path }}"
+      register: stat_result
+
+    - name: Download Debian cloud-init image
+      ansible.builtin.get_url:
+        url: "{{ proxmox_debian_url }}"
+        dest: "{{ proxmox_debian_path }}"
+        mode: "0644"
+      when: not stat_result.stat.exists
+
+- name: Create VM
+  hosts: "{{ vm_hosts }}"
+  gather_facts: false
+  strategy: free
+
+  roles:
+    - role: proxmox/vm/create
+
+- name: VM setup
+  hosts: "{{ vm_hosts }}"
+  strategy: free
+
+  roles:
+    - role: system/hostname
+    - role: geerlingguy.ntp
+      become: true
+    - role: system/users
+    - role: system/sshd

@@ -1,0 +1,6 @@
+- name: Destroy CTs
+  hosts: k3s-experimental
+  gather_facts: false
+
+  roles:
+    - role: proxmox/vm/destroy

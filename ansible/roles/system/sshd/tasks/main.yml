@@ -1,0 +1,22 @@
+- name: Update SSH config
+  ansible.builtin.lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    validate: /usr/sbin/sshd -t -f %s
+    mode: "0644"
+  with_items:
+    - regexp: "^PasswordAuthentication"
+      line: "PasswordAuthentication {{ 'yes' if system_sshd_password_authentication else 'no' }}"
+    - regexp: "^PermitRootLogin"
+      line: "PermitRootLogin {{ 'yes' if system_sshd_permit_root_login else 'no' }}"
+    - regexp: "^PermitEmptyPasswords"
+      line: "PermitEmptyPasswords no"
+    - regexp: "^ChallengeResponseAuthentication"
+      line: "ChallengeResponseAuthentication no"
+    - regexp: "^GSSAPIAuthentication"
+      line: "GSSAPIAuthentication no"
+    - regexp: "^X11Forwarding"
+      line: "X11Forwarding no"
+  become: true
+  notify: Restart SSHD

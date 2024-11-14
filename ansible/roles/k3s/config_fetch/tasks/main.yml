@@ -1,0 +1,35 @@
+- name: Read k3s config
+  become: true
+  ansible.builtin.slurp:
+    path: /etc/rancher/k3s/k3s.yaml
+  register: k3s_yaml
+
+- name: Set kube config fact
+  ansible.builtin.set_fact:
+    kube_config: "{{ k3s_yaml['content'] | b64decode | from_yaml }}"
+
+- name: Set cluster address
+  delegate_to: localhost
+  ansible.builtin.command:
+    cmd: kubectl config set clusters.{{ inventory_hostname }}.server https://{{ ansible_host | ansible.utils.ipwrap }}:6443
+
+- name: Set cluster certificate-authority-data
+  delegate_to: localhost
+  ansible.builtin.command:
+    cmd: kubectl config set clusters.{{ inventory_hostname }}.certificate-authority-data {{ kube_config.clusters.0.cluster['certificate-authority-data'] }}
+
+- name: Set user
+  delegate_to: localhost
+  ansible.builtin.command:
+    cmd: kubectl config set users.{{ inventory_hostname }}.{{ item }} {{ kube_config.users.0.user[item] }}
+  loop:
+    - "client-certificate-data"
+    - "client-key-data"
+
+- name: Set context
+  delegate_to: localhost
+  ansible.builtin.command:
+    cmd: kubectl config set contexts.{{ inventory_hostname }}.{{ item }} {{ inventory_hostname }}
+  loop:
+    - "cluster"
+    - "user"

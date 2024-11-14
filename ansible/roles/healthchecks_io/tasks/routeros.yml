@@ -1,0 +1,9 @@
+- name: Create script
+  community.network.routeros_command:
+    commands:
+      - /system script add name={{ healthchecks_io_cronjob_name }} policy=read,test source="/tool fetch duration=10 output=none http-method=post url=\"https://hc-ping.com/{{ healthchecks_io_check_info.uuid }}\";"
+
+- name: Set cron entry
+  community.network.routeros_command:
+    commands:
+      - /system scheduler add name={{ healthchecks_io_cronjob_name }} interval={{ healthchecks_io_interval_minutes }}m on-event={{ healthchecks_io_cronjob_name }} policy=read,test start-time=startup

@@ -1,0 +1,25 @@
+- name: Set Healthchecks.io api token fact
+  delegate_to: localhost
+  ansible.builtin.set_fact:
+    healthchecks_io_token: "{{ lookup('community.general.onepassword', 'Healthchecks.io', vault='Homelab', field='token_rw') }}"
+
+- name: Get available channels
+  delegate_to: localhost
+  community.healthchecksio.channels_info:
+    api_key: "{{ healthchecks_io_token }}"
+  register: healthchecks_io_channels_info
+
+- name: Create check
+  delegate_to: localhost
+  community.healthchecksio.checks:
+    state: present
+    name: "{{ healthchecks_io_check_name }}"
+    api_key: "{{ healthchecks_io_token }}"
+    unique: ["name"]
+    timeout: "{{ healthchecks_io_interval_minutes * 60 }}"
+    grace: "{{ healthchecks_io_interval_minutes * 60 }}"
+    channels: "{{ healthchecks_io_channels_info.data.channels | selectattr('name', 'in', healthchecks_io_channels_names) | map(attribute='id') | join(',') }}"
+  register: healthchecks_io_check_info
+
+- name: Include tasks for a chosen platform
+  include_tasks: "{{ healthchecks_io_platform }}.yml"

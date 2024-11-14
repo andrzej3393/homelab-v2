@@ -1,0 +1,1 @@
+ansible_host: "{{ network_cidr | ansible.utils.ipsubnet(24, gateway_vlan) | ansible.utils.ipmath(network_host) }}"
