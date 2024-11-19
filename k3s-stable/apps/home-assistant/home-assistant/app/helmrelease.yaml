@@ -62,9 +62,6 @@ spec:
         gethomepage.dev/name: "Home Assistant"
         gethomepage.dev/group: "Automations"
         gethomepage.dev/icon: "home-assistant"
-        gethomepage.dev/widget.type: "homeassistant"
-        gethomepage.dev/widget.url: "https://home-assistant.${HOMELAB_DOMAIN}"
-        gethomepage.dev/widget.key: "${HOMEASSISTANT_TOKEN}"
       hosts:
         - host: "home-assistant.${HOMELAB_DOMAIN}"
           paths:
