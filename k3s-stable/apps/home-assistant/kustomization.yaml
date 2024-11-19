@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - namespace.yaml
   - home-assistant/kustomization.yaml
+  - mosquitto/kustomization.yaml

@@ -24,3 +24,4 @@ resources:
   - searxng.yaml
   - stable-diffusion-webui.yaml
   - home-assistant.yaml
+  - t3n.yaml
