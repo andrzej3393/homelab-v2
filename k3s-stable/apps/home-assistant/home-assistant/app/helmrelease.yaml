@@ -1,0 +1,60 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: home-assistant
+  namespace: home-assistant
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: home-assistant
+      version: 0.2.87
+      sourceRef:
+        kind: HelmRepository
+        name: home-assistant
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 5
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    image:
+      repository: ghcr.io/home-assistant/home-assistant
+      tag: 2024.11.2
+    securityContext:
+      privileged: true
+    serviceMonitor:
+      enabled: true
+    persistence:
+      enabled: true
+      accessMode: ReadWriteOnce
+      size: 1Gi
+      storageClass: nfs-ssd
+    ingress:
+      enabled: true
+      className: nginx
+      annotations:
+        external-dns.alpha.kubernetes.io/hostname: "home-assistant.${HOMELAB_DOMAIN}"
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/name: "Home Assistant"
+        gethomepage.dev/group: "Automations"
+        gethomepage.dev/icon: "home-assistant"
+        gethomepage.dev/widget.type: "homeassistant"
+        gethomepage.dev/widget.url: "https://home-assistant.${HOMELAB_DOMAIN}"
+        gethomepage.dev/widget.key: "${HOMEASSISTANT_TOKEN}"
+        gethomepage.dev/widget.custom.0.template: "{{ states('sensor.rack_power_meter_power', rounded=False, with_unit=True) }}"
+        gethomepage.dev/widget.custom.0.label: "Rack power usage"
+        gethomepage.dev/widget.custom.1.template: "{{ states('sensor.rack_thermometer_temperature', rounded=False, with_unit=True) }}"
+        gethomepage.dev/widget.custom.1.label: "Rack temperature"
+        gethomepage.dev/widget.custom.2.template: "{{ states('sensor.rack_thermometer_humidity', rounded=False, with_unit=True) }}"
+        gethomepage.dev/widget.custom.2.label: "Rack humidity"
+      hosts:
+        - host: "home-assistant.${HOMELAB_DOMAIN}"
+          paths:
+            - path: /
+              pathType: Prefix
