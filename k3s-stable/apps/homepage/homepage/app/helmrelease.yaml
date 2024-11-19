@@ -43,21 +43,6 @@ spec:
     config:
       services:
         - Automations:
-            - Homeassistant:
-                icon: home-assistant
-                href: https://homeassistant.${HOMELAB_DOMAIN}/
-                ping: https://homeassistant.${HOMELAB_DOMAIN}/
-                widget:
-                  type: homeassistant
-                  url: https://homeassistant.${HOMELAB_DOMAIN}
-                  key: "${HOMEASSISTANT_TOKEN}"
-                  custom:
-                    - template: "{{ states('sensor.rack_power_meter_power', rounded=False, with_unit=True) }}"
-                      label: "Rack power usage"
-                    - template: "{{ states('sensor.rack_thermometer_temperature', rounded=False, with_unit=True) }}"
-                      label: "Rack temperature"
-                    - template: "{{ states('sensor.rack_thermometer_humidity', rounded=False, with_unit=True) }}"
-                      label: "Rack humidity"
         - Monitoring:
             - Healthchecks.io:
                 icon: healthchecks
