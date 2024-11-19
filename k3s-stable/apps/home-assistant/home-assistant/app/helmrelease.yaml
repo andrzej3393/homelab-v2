@@ -65,12 +65,6 @@ spec:
         gethomepage.dev/widget.type: "homeassistant"
         gethomepage.dev/widget.url: "https://home-assistant.${HOMELAB_DOMAIN}"
         gethomepage.dev/widget.key: "${HOMEASSISTANT_TOKEN}"
-#        gethomepage.dev/widget.custom.0.template: "{{ states('sensor.rack_power_meter_power', rounded=False, with_unit=True) }}"
-#        gethomepage.dev/widget.custom.0.label: "Rack power usage"
-#        gethomepage.dev/widget.custom.1.template: "{{ states('sensor.rack_thermometer_temperature', rounded=False, with_unit=True) }}"
-#        gethomepage.dev/widget.custom.1.label: "Rack temperature"
-#        gethomepage.dev/widget.custom.2.template: "{{ states('sensor.rack_thermometer_humidity', rounded=False, with_unit=True) }}"
-#        gethomepage.dev/widget.custom.2.label: "Rack humidity"
       hosts:
         - host: "home-assistant.${HOMELAB_DOMAIN}"
           paths:
