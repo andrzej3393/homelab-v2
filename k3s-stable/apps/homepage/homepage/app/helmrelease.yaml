@@ -42,7 +42,6 @@ spec:
         ingressClassName: nginx
     config:
       services:
-        - Automations:
         - Monitoring:
             - Healthchecks.io:
                 icon: healthchecks
