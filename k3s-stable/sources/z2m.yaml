@@ -2,8 +2,8 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: HelmRepository
 metadata:
-  name: t3n
+  name: z2m
   namespace: flux-system
 spec:
   interval: 1h
-  url: https://storage.googleapis.com/t3n-helm-charts
+  url: https://charts.zigbee2mqtt.io/
