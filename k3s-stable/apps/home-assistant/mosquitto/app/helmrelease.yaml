@@ -57,10 +57,7 @@ spec:
                   port: http
     persistence:
       data:
-        type: persistentVolumeClaim
-        accessMode: ReadWriteOnce
-        size: 1Gi
-        retain: true
+        existingClaim: mosquitto-data
         globalMounts:
           - path: /mosquitto/data
       config:
