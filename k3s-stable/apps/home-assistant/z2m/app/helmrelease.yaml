@@ -48,4 +48,4 @@ spec:
         storageClassName: nfs-ssd
     zigbee2mqtt:
       mqtt:
-        server: "mqtt://"
+        server: "mqtt://mosquitto.home-assistant.svc.cluster.local:8883"
