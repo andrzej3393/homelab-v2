@@ -38,23 +38,6 @@ spec:
         ports:
           http:
             port: 8883
-    ingress:
-      app:
-        enabled: true
-        className: nginx
-        annotations:
-          external-dns.alpha.kubernetes.io/hostname: "mosquitto.${HOMELAB_DOMAIN}"
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/name: "MQTT"
-          gethomepage.dev/group: "Automations"
-          gethomepage.dev/icon: "mqtt"
-        hosts:
-          - host: "mosquitto.${HOMELAB_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
     persistence:
       data:
         existingClaim: mosquitto-data
