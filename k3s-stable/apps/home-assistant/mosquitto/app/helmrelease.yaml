@@ -60,6 +60,7 @@ spec:
         type: persistentVolumeClaim
         accessMode: ReadWriteOnce
         size: 1Gi
+        retain: true
         globalMounts:
           - path: /mosquitto/data
       config:
