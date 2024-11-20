@@ -6,6 +6,8 @@ metadata:
   namespace: home-assistant
 spec:
   interval: 30m
+  driftDetection:
+    mode: enabled
   chart:
     spec:
       chart: zigbee2mqtt
