@@ -51,5 +51,5 @@ spec:
     zigbee2mqtt:
       mqtt:
         server: "mqtt://mosquitto.home-assistant.svc.cluster.local:8883"
-        serial:
-          port: "/dev/ttyUSB0"
+      serial:
+        port: "/dev/ttyUSB0"
