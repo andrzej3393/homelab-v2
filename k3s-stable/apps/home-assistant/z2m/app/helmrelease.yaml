@@ -39,7 +39,7 @@ spec:
             - path: /api
               pathType: ImplementationSpecific
       tls:
-        hosts:
+        - hosts:
           - "zigbee2mqtt.${HOMELAB_DOMAIN}"
       annotations:
         external-dns.alpha.kubernetes.io/hostname: "zigbee2mqtt.${HOMELAB_DOMAIN}"
