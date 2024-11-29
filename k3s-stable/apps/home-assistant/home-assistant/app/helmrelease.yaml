@@ -67,3 +67,11 @@ spec:
           paths:
             - path: /
               pathType: Prefix
+    additionalVolumes:
+      - name: dbus
+        hostPath:
+          path: "/var/run/dbus"
+    additionalMounts:
+      - mountPath: "/var/run/dbus"
+        name: dbus
+        readOnly: true

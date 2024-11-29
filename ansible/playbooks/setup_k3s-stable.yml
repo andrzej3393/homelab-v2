@@ -34,6 +34,16 @@
         state: present
       become: true
 
+- name: Install bluez
+  hosts: k3s-stable
+  tasks:
+    - name: Install packages
+      apt:
+        update_cache: true
+        name: bluez
+        state: present
+      become: true
+
 - name: Deploy K3S
   hosts: k3s-stable
   roles:
