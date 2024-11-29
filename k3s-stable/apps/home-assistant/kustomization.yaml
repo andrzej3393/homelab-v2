@@ -6,3 +6,4 @@ resources:
   - home-assistant/kustomization.yaml
   - mosquitto/kustomization.yaml
   - z2m/kustomization.yaml
+  - esphome/kustomization.yaml
