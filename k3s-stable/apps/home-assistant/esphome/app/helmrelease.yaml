@@ -31,6 +31,8 @@ spec:
             image:
               repository: esphome/esphome
               tag: 2024.11
+            env:
+              ESPHOME_DASHBOARD_USE_PING: "true"
     service:
       app:
         enabled: true
