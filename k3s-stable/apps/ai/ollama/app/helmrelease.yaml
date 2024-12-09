@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: ollama
-      version: "0.69.0"
+      version: "1.0.0"
       sourceRef:
         kind: HelmRepository
         name: ollama
@@ -30,7 +30,8 @@ spec:
         type: "nvidia"
         number: 1
       models:
-        - llama3
+        pull:
+          - llama3
     ingress:
       enabled: true
       className: nginx
