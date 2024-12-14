@@ -61,5 +61,3 @@ spec:
         disable_led: false
       advanced:
         transmit_power: 20
-        pan_id: 0x2137
-        ext_pan_id: [0x21, 0x37, 0x21, 0x37, 0x21, 0x37, 0x21, 0x37]
