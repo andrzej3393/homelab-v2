@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  name: z2m
+  name: z2m-garage
   namespace: home-assistant
 spec:
   interval: 30m
@@ -32,7 +32,7 @@ spec:
       enabled: true
       ingressClassName: nginx
       hosts:
-        - host: "zigbee2mqtt.${HOMELAB_DOMAIN}"
+        - host: "zigbee2mqtt-garage.${HOMELAB_DOMAIN}"
           paths:
             - path: /
               pathType: ImplementationSpecific
@@ -40,11 +40,11 @@ spec:
               pathType: ImplementationSpecific
       tls:
         - hosts:
-          - "zigbee2mqtt.${HOMELAB_DOMAIN}"
+          - "zigbee2mqtt-garage.${HOMELAB_DOMAIN}"
       annotations:
-        external-dns.alpha.kubernetes.io/hostname: "zigbee2mqtt.${HOMELAB_DOMAIN}"
+        external-dns.alpha.kubernetes.io/hostname: "zigbee2mqtt-garage.${HOMELAB_DOMAIN}"
         gethomepage.dev/enabled: "true"
-        gethomepage.dev/name: "Zigbee2MQTT Home"
+        gethomepage.dev/name: "Zigbee2MQTT Garage"
         gethomepage.dev/group: "Automations"
         gethomepage.dev/icon: "zigbee2mqtt"
     statefulset:
@@ -55,5 +55,9 @@ spec:
       mqtt:
         server: "mqtt://mosquitto.home-assistant.svc.cluster.local:8883"
       serial:
-        port: "/dev/ttyUSB0"
-        adapter: "ezsp"
+        port: "tcp://192.168.34.2:6638"
+        adapter: "zstack"
+        baudrate: "115200"
+        disable_led: false
+      advanced:
+        transmit_power: 20
