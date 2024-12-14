@@ -1,0 +1,66 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: esphome
+  namespace: home-assistant
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.5.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 5
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    controllers:
+      esphome:
+        containers:
+          app:
+            image:
+              repository: esphome/esphome
+              tag: 2024.11
+            env:
+              ESPHOME_DASHBOARD_USE_PING: "true"
+    service:
+      app:
+        enabled: true
+        controller: esphome
+        ports:
+          http:
+            port: 6052
+    ingress:
+      app:
+        enabled: true
+        className: nginx
+        annotations:
+          external-dns.alpha.kubernetes.io/hostname: "esphome.${HOMELAB_DOMAIN}"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/name: "ESPHome"
+          gethomepage.dev/group: "Automations"
+          gethomepage.dev/icon: "esphome"
+          gethomepage.dev/widget.type: "esphome"
+          gethomepage.dev/widget.url: "https://esphome.${HOMELAB_DOMAIN}"
+        hosts:
+          - host: "esphome.${HOMELAB_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+    persistence:
+      config:
+        existingClaim: esphome-config
+        globalMounts:
+          - path: /config
