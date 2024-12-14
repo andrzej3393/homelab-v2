@@ -6,5 +6,5 @@ resources:
   - home-assistant/kustomization.yaml
   - mosquitto/kustomization.yaml
   - z2m/kustomization.yaml
-#  - z2m-garage/kustomization.yaml
+  - z2m-garage/kustomization.yaml
   - esphome/kustomization.yaml
