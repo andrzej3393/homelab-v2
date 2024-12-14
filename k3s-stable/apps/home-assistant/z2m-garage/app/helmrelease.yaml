@@ -61,6 +61,3 @@ spec:
         disable_led: false
       advanced:
         transmit_power: 20
-        pan_id: GENERATE
-        ext_pan_id: GENERATE
-        network_key: GENERATE
