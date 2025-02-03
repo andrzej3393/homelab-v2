@@ -54,6 +54,7 @@ spec:
     zigbee2mqtt:
       mqtt:
         server: "mqtt://mosquitto.home-assistant.svc.cluster.local:8883"
+        base_topic: zigbee2mqtt_home
       serial:
         port: "/dev/ttyUSB0"
         adapter: "ezsp"

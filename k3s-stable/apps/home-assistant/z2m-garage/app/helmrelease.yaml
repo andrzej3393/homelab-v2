@@ -54,6 +54,7 @@ spec:
     zigbee2mqtt:
       mqtt:
         server: "mqtt://mosquitto.home-assistant.svc.cluster.local:8883"
+        base_topic: zigbee2mqtt_garage
       serial:
         port: "tcp://192.168.34.2:6638"
         adapter: "zstack"
