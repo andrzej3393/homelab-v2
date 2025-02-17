@@ -1,0 +1,50 @@
+site_name: andrzej3393/homelab-v2
+site_description: Homelab (mostly) as a Code.
+site_author: andrzej3393
+site_url: https://homelab.andrzejgor.ski/
+
+repo_name: andrzej3393/homelab-v2
+repo_url: https://github.com/andrzej3393/homelab-v2
+
+theme:
+  name: material
+  language: en
+  palette:
+    scheme: slate
+    primary: deep-purple
+    accent: deep-orange
+  features:
+    - navigation.tracking
+    - navigation.path
+    - navigation.indexes
+    - navigation.footer
+    - navigation.top
+    - navigation.tabs
+    - toc.follow
+    - toc.integrate
+    - content.code.copy
+    - content.code.annotate
+  font:
+    text: Lato
+    code: Source Code Pro
+  icon:
+    repo: fontawesome/brands/github
+
+plugins:
+  - search
+  - minify:
+      minify_html: true
+
+markdown_extensions:
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+nav:
+  - Home: index.md
