@@ -21,4 +21,4 @@ This is a monorepo for my homelab setup. It contains all the configuration files
 
 ## License
 
-[MIT](LICENSE.md) - © 2025 [Andrzej Górski](https://andrzejgor.ski)
+[MIT](LICENSE) - © 2025 [Andrzej Górski](https://andrzejgor.ski)
