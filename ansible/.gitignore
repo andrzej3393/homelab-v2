@@ -1,3 +1,4 @@
+/.ansible/
 /collections/ansible_collections/
 /roles/geerlingguy.ntp/
 /roles/lae.proxmox/
