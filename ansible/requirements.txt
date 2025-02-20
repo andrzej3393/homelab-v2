@@ -1,0 +1,12 @@
+# Ansible
+ansible==11.2.0
+ansible-pylibssh==1.2.2
+ansible-lint==24.12.2
+passlib==1.7.4
+jmespath==1.0.1
+requests==2.32.3
+proxmoxer==2.2.0
+netaddr==1.3.0
+kubernetes==32.0.0
+httpx==0.28.1
+lxml==5.3.1
