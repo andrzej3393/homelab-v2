@@ -1,0 +1,67 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: jellyfin
+  namespace: media
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: jellyfin
+      version: 2.3.0
+      sourceRef:
+        kind: HelmRepository
+        name: jellyfin
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  uninstall:
+    keepHistory: false
+  values:
+    runtimeClassName: nvidia
+    ingress:
+      enabled: true
+      className: nginx
+      annotations:
+        external-dns.alpha.kubernetes.io/hostname: "jellyfin.${HOMELAB_DOMAIN}"
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/name: "Jellyfin"
+        gethomepage.dev/group: "Media"
+        gethomepage.dev/icon: "jellyfin"
+      hosts:
+        - host: "jellyfin.${HOMELAB_DOMAIN}"
+          paths:
+            - path: /
+              pathType: ImplementationSpecific
+    resources:
+      limits:
+        nvidia.com/gpu: 1
+    persistence:
+      config:
+        storageClass: nfs-ssd
+      media:
+        enabled: false
+    securityContext:
+      capabilities:
+        add:
+          - "SYS_ADMIN"
+        drop:
+          - "ALL"
+      privileged: false
+    volumes:
+      - name: hwa
+        hostPath:
+          path: /dev/dri
+      - name: nfs-media
+        nfs:
+          server: "nfs.nas.${HOMELAB_DOMAIN}"
+          path: "/mnt/hdd/media"
+    volumeMounts:
+      - name: hwa
+        mountPath: /dev/dri
+      - name: nfs-media
+        mountPath: /nfs-media

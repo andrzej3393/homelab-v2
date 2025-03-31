@@ -25,3 +25,4 @@ resources:
   - stable-diffusion-webui.yaml
   - home-assistant.yaml
   - z2m.yaml
+  - jellyfin.yaml
