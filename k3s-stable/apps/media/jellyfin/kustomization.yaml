@@ -18,5 +18,7 @@ spec:
     substituteFrom:
       - kind: Secret
         name: core-substitutions
+      - kind: Secret
+        name: homepage-substitutions
   dependsOn:
     - name: cluster-config
