@@ -45,8 +45,11 @@ spec:
         generic:
           timezone: Europe/Warsaw
         n8n:
-          editorBaseURL: "https://n8n.${HOMELAB_DOMAIN}/"
-          defaultLocale: pl
+          editor:
+            base:
+              url: "https://n8n.${HOMELAB_DOMAIN}/"
+          default:
+            locale: pl
       extraEnv:
         DB_POSTGRESDB_DATABASE:
           valueFrom:
