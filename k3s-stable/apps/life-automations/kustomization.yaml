@@ -6,3 +6,4 @@ resources:
   - drive-invoices
   - changedetection/kustomization.yaml
   - regaris
+  - n8n/kustomization.yaml

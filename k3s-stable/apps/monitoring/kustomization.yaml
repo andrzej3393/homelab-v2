@@ -5,7 +5,7 @@ resources:
   - namespace.yaml
   - influxdb/kustomization.yaml
   - scrutiny/kustomization.yaml
-  - pve-exporter/kustomization.yaml
+#  - pve-exporter/kustomization.yaml
   - robusta/kustomization.yaml
   - healthchecks_io/kustomization.yaml
   - speedtest/kustomization.yaml
