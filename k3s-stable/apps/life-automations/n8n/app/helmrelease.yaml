@@ -37,7 +37,7 @@ spec:
       hosts:
         - host: "n8n.${HOMELAB_DOMAIN}"
           paths:
-            - path: /
+            - /
     main:
       config:
         db:
