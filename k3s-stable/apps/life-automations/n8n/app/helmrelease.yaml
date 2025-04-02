@@ -24,7 +24,7 @@ spec:
   values:
     image:
       repository: n8nio/n8n
-      tag: 1.85.1
+      tag: 1.85.4
     ingress:
       enabled: true
       annotations:
@@ -45,8 +45,8 @@ spec:
         generic:
           timezone: Europe/Warsaw
         n8n:
-          default:
-            locale: pl
+          editorBaseURL: "https://n8n.${HOMELAB_DOMAIN}/"
+          defaultLocale: pl
       extraEnv:
         DB_POSTGRESDB_DATABASE:
           valueFrom:
