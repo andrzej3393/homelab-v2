@@ -1,0 +1,15 @@
+apiVersion: external-secrets.io/v1beta1
+kind: SecretStore
+metadata:
+  name: github-andrzej3339-homelab-v2
+spec:
+  provider:
+    github:
+      appID: 1211913
+      installationID: 64307700
+      auth:
+        privateKey:
+          name: github-app-private-key
+          key: private-key
+      organization: andrzej3339
+      repository: homelab-v2

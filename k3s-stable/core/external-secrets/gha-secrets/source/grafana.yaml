@@ -1,0 +1,19 @@
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: &name grafana
+  namespace: external-secrets
+spec:
+  secretStoreRef:
+    name: op-connect
+    kind: ClusterSecretStore
+  target:
+    name: *name
+    template:
+      engineVersion: v2
+      data:
+        password: "{{ .password }}"
+        username: "{{ .username }}"
+  dataFrom:
+    - extract:
+        key: "Grafana"
