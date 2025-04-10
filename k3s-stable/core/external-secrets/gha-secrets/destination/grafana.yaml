@@ -2,6 +2,7 @@ apiVersion: external-secrets.io/v1beta1
 kind: PushSecret
 metadata:
   name: grafana
+  namespace: external-secrets
 spec:
   deletionPolicy: "Delete"
   refreshInterval: "10m"
