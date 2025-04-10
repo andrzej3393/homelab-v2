@@ -14,7 +14,8 @@ spec:
         name: external-dns
         namespace: flux-system
   values:
-    provider: cloudflare
+    provider:
+      name: cloudflare
     domainFilters: ["${CLOUDFLARE_ZONE}"]
     txtPrefix: "k3s-stable"
     extraArgs:
