@@ -2,7 +2,6 @@ apiVersion: external-secrets.io/v1beta1
 kind: SecretStore
 metadata:
   name: github-andrzej3339-homelab-v2
-  namespace: external-secrets
 spec:
   provider:
     github:
