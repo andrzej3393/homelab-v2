@@ -6,4 +6,3 @@ resources:
   - op-connect/kustomization.yaml
   - external-secrets/kustomization.yaml
   - cluster-wide-secrets/kustomization.yaml
-  - gha-secrets/kustomization.yaml
