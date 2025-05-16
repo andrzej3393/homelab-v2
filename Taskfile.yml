@@ -5,31 +5,47 @@ tasks:
     dir: ansible
     cmds:
       - ansible proxmoxes -i inventory.static.yml -m reboot --become --forks 1
+
   ansible-setup:
     dir: ansible
     cmds:
       - pip install -r requirements.txt
       - ansible-galaxy install -r requirements.yml --force
+
   ansible-facts:
     dir: ansible
     cmds:
       - ansible -m setup {{.CLI_ARGS}}
+
   ansible-lint:
     dir: ansible
     cmds:
       - ansible-lint -c .ansible-lint
+
+  tf:
+    dir: terraform
+    cmds:
+      - terraform {{.CLI_ARGS}}
+    env:
+      AWS_SECRET_ACCESS_KEY:
+        sh: op item get 'Backblaze B2 Terraform' --fields label=application_key --reveal
+      AWS_ACCESS_KEY_ID:
+        sh: op item get 'Backblaze B2 Terraform' --fields label=key_id --reveal
+
   prettier:
     cmds:
       - prettier --write .
+
+  tf-fmt:
+    cmds:
+      - terraform fmt -recursive
+
   docs:
     cmds:
       - mkdocs serve
+
   linters:
     cmds:
       - task: ansible-lint
       - task: prettier
-  experimental:
-    cmds:
-      - git fetch --tags --force
-      - git tag --force experimental
-      - git push origin experimental --force
+      - task: tf-fmt

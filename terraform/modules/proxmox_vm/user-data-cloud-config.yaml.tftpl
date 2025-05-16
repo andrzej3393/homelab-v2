@@ -1,0 +1,30 @@
+#cloud-config
+hostname: ${vm_name}
+%{ if users == [] }
+users: []
+%{ else }
+users:
+  %{ for user in users }
+  - name: ${user.username}
+    shell: ${user.shell}
+    %{ if user.sudo != "none" }
+    groups:
+      - sudo
+    sudo: ALL=(ALL) %{if user.sudo == "all_nopasswd"}NOPASSWD:%{endif}ALL
+    %{ endif }
+    %{ if user.public_ssh_key != "" }
+    ssh_authorized_keys:
+      - ${trimspace(user.public_ssh_key)}
+    %{ endif }
+  %{ endfor }
+%{ endif }
+package_update: true
+package_upgrade: true
+package_reboot_if_required: true
+packages:
+  - qemu-guest-agent
+  - net-tools
+runcmd:
+  - systemctl enable qemu-guest-agent
+  - systemctl start qemu-guest-agent
+  - echo "done" > /tmp/cloud-config.done
