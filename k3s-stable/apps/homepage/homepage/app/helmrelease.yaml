@@ -129,6 +129,10 @@ spec:
               tab: Services
               style: row
               columns: 2
+          - Web:
+              tab: Services
+              style: row
+              columns: 2
           # Management
           - Monitoring:
               tab: Management
