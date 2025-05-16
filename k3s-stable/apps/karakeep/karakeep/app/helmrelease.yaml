@@ -49,7 +49,7 @@ spec:
         containers:
           chrome:
             image:
-              repository: ghcr.io/zenika-hub/alpine-chrome
+              repository: gcr.io/zenika-hub/alpine-chrome
               tag: 124
             command:
               - chromium-browser
