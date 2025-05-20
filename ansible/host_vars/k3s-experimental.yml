@@ -42,4 +42,4 @@ k3s_server:
     - "node.cilium.io/agent-not-ready:NoSchedule"
 
 # renovate: datasource=github-releases depName=cilium/cilium
-cilium_chart_version: "1.17.3"
+cilium_chart_version: "1.17.4"
