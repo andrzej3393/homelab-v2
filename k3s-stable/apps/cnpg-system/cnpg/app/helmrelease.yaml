@@ -24,7 +24,7 @@ spec:
   values:
     image:
       repository: "ghcr.io/cloudnative-pg/cloudnative-pg"
-      tag: "1.25.1"
+      tag: "1.26.0"
     monitoring:
       podMonitorEnabled: true
       grafanaDashboard:
