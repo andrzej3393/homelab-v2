@@ -67,7 +67,7 @@ spec:
           meilisearch:
             image:
               repository: getmeili/meilisearch
-              tag: v1.15.1
+              tag: v1.15.2
             env:
               MEILI_NO_ANALYTICS: "true"
             envFrom:
