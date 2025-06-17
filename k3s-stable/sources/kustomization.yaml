@@ -27,3 +27,4 @@ resources:
   - z2m.yaml
   - jellyfin.yaml
   - n8n.yaml
+  - penpot.yaml
