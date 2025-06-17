@@ -70,7 +70,7 @@ spec:
               tag: v1.15.2
             command: "/bin/meilisearch"
             args:
-              - "-experimental-dumpless-upgrade"
+              - "--experimental-dumpless-upgrade"
             env:
               MEILI_NO_ANALYTICS: "true"
             envFrom:
