@@ -53,12 +53,10 @@ spec:
     persistence:
       assets:
         enabled: true
-        storageClass: "nfs-ssd"
-        size: "20Gi"
+        existingClaim: "penpot-assets"
       exporter:
         enabled: true
-        storageClass: "nfs-ssd"
-        size: "20Gi"
+        existingClaim: "penpot-exporter"
     ingress:
       enabled: true
       className: nginx
