@@ -68,6 +68,9 @@ spec:
             image:
               repository: getmeili/meilisearch
               tag: v1.15.2
+            command: "/bin/meilisearch"
+            args:
+              - "-experimental-dumpless-upgrade"
             env:
               MEILI_NO_ANALYTICS: "true"
             envFrom:
