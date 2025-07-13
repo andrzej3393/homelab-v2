@@ -47,7 +47,7 @@ spec:
     frontend:
       image:
         repository: "penpotapp/frontend"
-        tag: "2.7.2"
+        tag: "2.8.0"
     exporter:
       image:
         repository: "penpotapp/exporter"
