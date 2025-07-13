@@ -51,7 +51,7 @@ spec:
     exporter:
       image:
         repository: "penpotapp/exporter"
-        tag: "2.7.2"
+        tag: "2.8.0"
     persistence:
       assets:
         enabled: true
