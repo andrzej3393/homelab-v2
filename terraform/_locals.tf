@@ -1,13 +1,13 @@
 locals {
-  vlans = {
-    clients  = 10
-    mgmt     = 20
-    services = 30
-    guest    = 40
-    iot      = 50
-    not      = 60
-    nfs      = 82
-  }
+  # vlans = {
+  #   clients  = 10
+  #   mgmt     = 20
+  #   services = 30
+  #   guest    = 40
+  #   iot      = 50
+  #   not      = 60
+  #   nfs      = 82
+  # }
 
   # vm_user_ansible = {
   #   username       = "ansible"
@@ -43,6 +43,6 @@ locals {
   ]
 }
 
-data "local_file" "ssh_public_key" {
-  filename = "/home/andrzej3393/.ssh/id_rsa.pub"
-}
+# data "local_file" "ssh_public_key" {
+#   filename = "/home/andrzej3393/.ssh/id_rsa.pub"
+# }
