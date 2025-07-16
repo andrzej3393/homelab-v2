@@ -9,18 +9,18 @@ locals {
     nfs      = 82
   }
 
-  vm_user_ansible = {
-    username       = "ansible"
-    shell          = "/bin/bash"
-    public_ssh_key = data.local_file.ssh_public_key.content
-    sudo           = "all_nopasswd"
-  }
-  vm_user_andrzej3393 = {
-    username       = "andrzej3393"
-    shell          = "/bin/bash"
-    public_ssh_key = data.local_file.ssh_public_key.content
-    sudo           = "all_nopasswd"
-  }
+  # vm_user_ansible = {
+  #   username       = "ansible"
+  #   shell          = "/bin/bash"
+  #   public_ssh_key = data.local_file.ssh_public_key.content
+  #   sudo           = "all_nopasswd"
+  # }
+  # vm_user_andrzej3393 = {
+  #   username       = "andrzej3393"
+  #   shell          = "/bin/bash"
+  #   public_ssh_key = data.local_file.ssh_public_key.content
+  #   sudo           = "all_nopasswd"
+  # }
 
   proxmox_nodes = [
     {

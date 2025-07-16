@@ -44,4 +44,4 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
 
       - name: TFLint
-        run: tflint --format compact --recursive --config .tflint.hcl
+        run: tflint --format compact --recursive --config `pwd`/.tflint.hcl
