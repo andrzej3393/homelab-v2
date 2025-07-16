@@ -1,0 +1,47 @@
+name: Terraform linters
+
+on:
+  pull_request:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+
+jobs:
+  fmt:
+    name: Terraform fmt
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get TF version
+        id: get-tf-version
+        run: echo "version=$(cat '.terraform-version')" >> $GITHUB_OUTPUT
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ steps.get-tf-version.outputs.version }}
+
+      - name: Terraform fmt
+        run: terraform fmt -check -recursive -no-color
+        working-directory: terraform
+
+  tflint:
+    name: TFLint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup TFLint
+        uses: terraform-linters/setup-tflint@v4
+
+      - name: TFLint init
+        run: tflint --init
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+
+      - name: TFLint
+        run: tflint --format compact --recursive --config .tflint.hcl
