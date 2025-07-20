@@ -28,7 +28,7 @@ spec:
           web:
             image:
               repository: ghcr.io/karakeep-app/karakeep
-              tag: 0.25.0
+              tag: 0.26.0
             env:
               MEILI_ADDR: "http://karakeep-meilisearch:7700"
               BROWSER_WEB_URL: "http://karakeep-chrome:9222"
