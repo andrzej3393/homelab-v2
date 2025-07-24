@@ -27,7 +27,7 @@ spec:
   values:
     image:
       repository: koenkk/zigbee2mqtt
-      tag: 2.5.1
+      tag: 2.5.1@sha256:1e639d3144960f246dcecc21d993169fd6844b5817e939bca498b2abf2c23159
     ingress:
       enabled: true
       ingressClassName: nginx
