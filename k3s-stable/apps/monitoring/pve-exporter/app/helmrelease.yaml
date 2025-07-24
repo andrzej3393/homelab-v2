@@ -22,7 +22,7 @@ spec:
   values:
     image:
       repository: prompve/prometheus-pve-exporter
-      tag: 3.5.5
+      tag: 3.5.5@sha256:79a5598906697b1a5a006d09f0200528a77c6ff1568faf018539ac65824454df
     env:
       pveAuthType: password
       pveUser: prometheus@pve

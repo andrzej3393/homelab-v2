@@ -28,7 +28,7 @@ spec:
           web:
             image:
               repository: ghcr.io/karakeep-app/karakeep
-              tag: 0.26.0
+              tag: 0.26.0@sha256:f575a34ed3f8975225c156786442f177846126cf27d7fd37350f3af23c549d22
             env:
               MEILI_ADDR: "http://karakeep-meilisearch:7700"
               BROWSER_WEB_URL: "http://karakeep-chrome:9222"
@@ -52,7 +52,7 @@ spec:
           chrome:
             image:
               repository: gcr.io/zenika-hub/alpine-chrome
-              tag: 124
+              tag: 124@sha256:1a0046448e0bb6c275c88f86e01faf0de62b02ec8572901256ada0a8c08be23f
             command:
               - chromium-browser
               - --headless
@@ -67,7 +67,7 @@ spec:
           meilisearch:
             image:
               repository: getmeili/meilisearch
-              tag: v1.15.2
+              tag: v1.15.2@sha256:fe500cf9cca05cb9f027981583f28eccf17d35d94499c1f8b7b844e7418152fc
             command: "/bin/meilisearch"
             args:
               - "--experimental-dumpless-upgrade"
