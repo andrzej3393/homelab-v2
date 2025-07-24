@@ -1,15 +1,14 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:recommended",
-    ":disableRateLimiting"
+    "config:best-practices"
   ],
   "labels": [
     "renovate"
   ],
   "assigneesFromCodeOwners": true,
+  "dependencyDashboard": true,
   "minimumReleaseAge": "3 days",
-  "internalChecksFilter": "strict",
   "customManagers": [
     {
       "customType": "regex",
