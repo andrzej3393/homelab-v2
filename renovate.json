@@ -10,28 +10,14 @@
   "assigneesFromCodeOwners": true,
   "minimumReleaseAge": "3 days",
   "internalChecksFilter": "strict",
-  "ansible-galaxy": {
-    "managerFilePatterns": [
-      "/^ansible/requirements\\.ya?ml$/"
-    ]
-  },
-  "flux": {
-    "managerFilePatterns": [
-      "/^k3s-stable/.*\\.ya?ml$/"
-    ]
-  },
-  "helm-values": {
-    "managerFilePatterns": [
-      "/^k3s-stable/.*\\.ya?ml$/"
-    ]
-  },
   "customManagers": [
     {
       "customType": "regex",
       "description": "Process custom dependencies",
       "managerFilePatterns": [
         "/(^|/)ansible/.+\\.ya?ml(\\.j2)?$/",
-        "/(^|/)k3s-stable/.+\\.ya?ml(\\.j2)?$/"
+        "/(^|/)k3s-stable/.+\\.ya?ml(\\.j2)?$/",
+        "/(^|/)k3s-experimental/.+\\.ya?ml(\\.j2)?$/"
       ],
       "matchStrings": [
         "datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)( versioning=(?<versioning>\\S+))?\n.*?\"(?<currentValue>.*)\"\n",
