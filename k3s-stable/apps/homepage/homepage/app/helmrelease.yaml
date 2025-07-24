@@ -24,7 +24,7 @@ spec:
   values:
     image:
       repository: ghcr.io/gethomepage/homepage
-      tag: v0.10.9
+      tag: v1.4.0
     enableRbac: true
     serviceAccount:
       create: true
@@ -40,6 +40,9 @@ spec:
               - path: /
                 pathType: Prefix
         ingressClassName: nginx
+    env:
+      - name: HOMEPAGE_ALLOWED_HOSTS
+        value: "dash.${HOMELAB_DOMAIN}"
     config:
       services:
         - Monitoring:
