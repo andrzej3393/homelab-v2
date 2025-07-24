@@ -16,6 +16,12 @@
       "/^k3s-experimental/.*\\.ya?ml$/"
     ]
   },
+  "flux": {
+    "managerFilePatterns": [
+      "/^k3s-stable/.*\\.ya?ml$/",
+      "/^k3s-experimental/.*\\.ya?ml$/"
+    ]
+  },
   "customManagers": [
     {
       "customType": "regex",
