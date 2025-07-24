@@ -9,6 +9,12 @@
   "assigneesFromCodeOwners": true,
   "dependencyDashboard": true,
   "minimumReleaseAge": "3 days",
+  "helm-values": {
+    "managerFilePatterns": [
+      "/^k3s-stable/.*\\.ya?ml$/",
+      "/^k3s-experimental/.*\\.ya?ml$/"
+    ]
+  },
   "customManagers": [
     {
       "customType": "regex",
