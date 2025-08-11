@@ -25,7 +25,7 @@ spec:
   values:
     image:
       repository: ghcr.io/home-assistant/home-assistant
-      tag: 2025.7.3@sha256:9682a29fdfde74dd67c78d724105a9c11cb2affaf350192b0a89447f958547df
+      tag: 2025.8.1@sha256:b064da094630c87b97a3b4ac2750a6ee13b251d0b301c8824bb168d57bc12cd0
     env:
       - name: PYTHONPATH
         value: "/config/deps"
