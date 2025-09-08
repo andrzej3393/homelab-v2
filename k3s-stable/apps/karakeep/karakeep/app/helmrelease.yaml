@@ -67,7 +67,7 @@ spec:
           meilisearch:
             image:
               repository: getmeili/meilisearch
-              tag: v1.17.1@sha256:a5d47e065e63da1a8a3c9691c60cb1ca10c8d1c3113c9e58427dbba1373ac5e9
+              tag: v1.19.1@sha256:abab6e9054572fea9fd409cf0f4fe3b65f6c8e70cd0f213004592b6d0e9587ac
             command: "/bin/meilisearch"
             args:
               - "--experimental-dumpless-upgrade"
