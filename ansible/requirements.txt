@@ -1,7 +1,7 @@
 # Ansible
 ansible==12.0.0
 ansible-pylibssh==1.2.2
-ansible-lint==25.8.1
+ansible-lint==25.8.2
 passlib==1.7.4
 jmespath==1.0.1
 requests==2.32.5
