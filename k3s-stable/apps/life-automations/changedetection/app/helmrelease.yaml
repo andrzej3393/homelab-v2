@@ -28,7 +28,7 @@ spec:
           main:
             image:
               repository: docker.io/dgtlmoon/changedetection.io
-              tag: "0.50.27@sha256:b598918d611c2371dbf5434109130a4ac8b5e146ecd86238eef77a0c725b61bd"
+              tag: "0.50.35@sha256:ccaff3c7f3185bd63217b54c173886e0ea6e1200a452c1d21a352cb40d042e02"
             env:
               TZ: Europe/Warsaw
               BASE_URL: "https://changedetection.${HOMELAB_DOMAIN}"
