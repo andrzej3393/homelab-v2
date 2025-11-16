@@ -12,7 +12,7 @@ terraform {
     }
     b2 = {
       source  = "backblaze/b2"
-      version = "~> 0"
+      version = ">= 0"
     }
     proxmox = {
       source  = "bpg/proxmox"
