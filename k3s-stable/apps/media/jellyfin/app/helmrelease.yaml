@@ -24,7 +24,7 @@ spec:
   values:
     image:
       repository: docker.io/jellyfin/jellyfin
-      tag: "10.11.1@sha256:c7dd335d455c95ad3fe7550824d93ceb911914bf4210e7899e11f9611ae53a92"
+      tag: "10.11.4@sha256:aab0b50a3ce43a41621fc7040a379cc57174059aec8f9c17a90176649a0c1ab1"
     runtimeClassName: nvidia
     ingress:
       enabled: true
