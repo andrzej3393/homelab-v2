@@ -28,7 +28,7 @@ spec:
           main:
             image:
               repository: ghcr.io/analogj/scrutiny
-              tag: master-web@sha256:36d8522b89583e3e0b44f9920c8c1cced28628d25c84ae3bb0b8108b9031b394
+              tag: master-web@sha256:192656ce791dc3e5bda7f7bf81cd3cb9f77ab2cde42a9bd0d8cac442b7e8bee1
             env:
               SCRUTINY_WEB_INFLUXDB_HOST: influxdb.monitoring.svc.cluster.local
               SCRUTINY_WEB_INFLUXDB_PORT: 80
