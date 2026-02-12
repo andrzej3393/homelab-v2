@@ -69,7 +69,7 @@ healthchecks_io_channels_names:
 healthchecks_io_interval_minutes: 5
 
 # renovate: datasource=github-releases depName=AnalogJ/scrutiny
-scrutiny_collector_version: "v0.8.1"
+scrutiny_collector_version: "v0.8.6"
 scrutiny_collector_api_endpoint: "https://scrutiny.{{ homelab_domain }}"
 scrutiny_collector_interval_hours: 1
 scrutiny_collector_os_arch: "linux-amd64"
