@@ -3,7 +3,7 @@ ansible==12.3.0
 ansible-pylibssh==1.4.0
 ansible-lint==25.9.2
 passlib==1.7.4
-jmespath==1.0.1
+jmespath==1.1.0
 requests==2.33.1
 proxmoxer==2.3.0
 netaddr==1.3.0
