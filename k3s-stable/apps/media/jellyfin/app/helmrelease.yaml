@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: jellyfin
-      version: 2.4.0
+      version: 3.0.0
       sourceRef:
         kind: HelmRepository
         name: jellyfin
@@ -24,7 +24,7 @@ spec:
   values:
     image:
       repository: docker.io/jellyfin/jellyfin
-      tag: "10.11.1@sha256:c7dd335d455c95ad3fe7550824d93ceb911914bf4210e7899e11f9611ae53a92"
+      tag: "10.11.8@sha256:1694ff069f0c9dafb283c36765175606866769f5d72f2ed56b6a0f1be922fc37"
     runtimeClassName: nvidia
     ingress:
       enabled: true
