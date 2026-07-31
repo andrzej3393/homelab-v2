@@ -16,12 +16,12 @@ resources:
   - christianknell.yaml
   - external-secrets.yaml
   - robusta.yaml
+  - searxng.yaml
   - cnpg.yaml
   - nfd.yaml
   - nvidia.yaml
   - ollama.yaml
   - open-webui.yaml
-  - searxng.yaml
   - stable-diffusion-webui.yaml
   - home-assistant.yaml
   - z2m.yaml
