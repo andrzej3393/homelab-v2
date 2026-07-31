@@ -17,7 +17,7 @@ spec:
   values:
     connect:
       credentialsName: op-connect-credentials
-      credentialsKey: credentials_b64
+      credentialsKey: 1password-credentials.json
   install:
     crds: Create
     remediation:
