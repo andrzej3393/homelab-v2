@@ -17,7 +17,7 @@ spec:
         spec:
           containers:
             - name: ping-healthchecks-io
-              image: quay.io/curl/curl:8.19.0@sha256:c03110c736db81bbe1be0296f1f1608c81b954b01626bdfb0a8f84e5bd00ff3c
+              image: quay.io/curl/curl:8.21.0@sha256:7c12af72ceb38b7432ab85e1a265cff6ae58e06f95539d539b654f2cfa64bb13
               imagePullPolicy: Always
               args:
                 - "-fsS"
