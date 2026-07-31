@@ -1,4 +1,4 @@
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
+apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: csi-driver-nfs
@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: csi-driver-nfs
-      version: 4.13.1
+      version: 4.13.4
       sourceRef:
         kind: HelmRepository
         name: csi-driver-nfs

@@ -5,10 +5,14 @@ metadata:
   namespace: life-automations
 spec:
   schedule: "30 * * * *"
+  concurrencyPolicy: Forbid
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   jobTemplate:
     spec:
+      activeDeadlineSeconds: 300
+      backoffLimit: 1
+      ttlSecondsAfterFinished: 3600
       template:
         spec:
           containers:

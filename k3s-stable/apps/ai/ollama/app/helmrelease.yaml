@@ -1,4 +1,4 @@
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
+apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: ollama
@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: ollama
-      version: "1.54.0"
+      version: "1.70.0"
       sourceRef:
         kind: HelmRepository
         name: ollama

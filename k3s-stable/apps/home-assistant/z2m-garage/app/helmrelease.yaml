@@ -1,5 +1,5 @@
 ---
-apiVersion: helm.toolkit.fluxcd.io/v2beta2
+apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: z2m-garage
@@ -11,7 +11,7 @@ spec:
   chart:
     spec:
       chart: zigbee2mqtt
-      version: 2.9.2
+      version: 2.12.1
       sourceRef:
         kind: HelmRepository
         name: z2m
@@ -27,7 +27,7 @@ spec:
   values:
     image:
       repository: koenkk/zigbee2mqtt
-      tag: 2.9.2@sha256:2a21bbf7a664a149024bbe1f776e3151f28ed9db15948270dcbffb89544a41f0
+      tag: 2.12.1@sha256:80f7f04f72a99e4c4ef51ef7e98ee736edba6db0ecbb7abc626d0c4b0f1871f1
     ingress:
       enabled: true
       ingressClassName: nginx

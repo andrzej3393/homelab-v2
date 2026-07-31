@@ -1,6 +1,6 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
-apiVersion: helm.toolkit.fluxcd.io/v2beta2
+apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: esphome
@@ -30,7 +30,7 @@ spec:
           app:
             image:
               repository: esphome/esphome
-              tag: 2026.3@sha256:a97aec43684597d32c4eeb2b929c8945f2a09098b447e97703f5c83570f0272d
+              tag: 2026.7@sha256:1445f14341cf0c40f29ab8c019b4c89bfb38bd8f6bb275af3b4b0ab1fb40fbd9
             env:
               ESPHOME_DASHBOARD_USE_PING: "true"
     service:

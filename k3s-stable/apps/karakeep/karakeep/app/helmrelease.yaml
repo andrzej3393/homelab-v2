@@ -1,4 +1,4 @@
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
+apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: karakeep
@@ -67,12 +67,11 @@ spec:
           meilisearch:
             image:
               repository: getmeili/meilisearch
-              tag: v1.41.0@sha256:860fa4baed04ae1c235de870edab0c8006227546dea1bbb6411fbfc5e27cf1db
+              tag: v1.51.0@sha256:a9eb29ee09ab4943db3b4c68620bd6f3382e6b2b0ac4431c0e607b48dbcd4c14
             command: "/bin/meilisearch"
-            args:
-              - "--experimental-dumpless-upgrade"
             env:
               MEILI_NO_ANALYTICS: "true"
+              MEILI_UPGRADE_DB: "true"
             envFrom:
               - secret: karakeep
     service:
