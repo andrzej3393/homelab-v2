@@ -29,8 +29,19 @@ spec:
     worker:
       config:
         core:
-          sources: ["custom", "pci", "usb", "system"]
+          featureSources: ["custom", "pci", "usb"]
+          labelSources: ["custom", "pci", "usb"]
         sources:
+          custom:
+            - name: gpu-operator-os-release-labels
+              labels:
+                feature.node.kubernetes.io/system-os_release.ID: debian
+                feature.node.kubernetes.io/system-os_release.VERSION_ID: "12"
+              matchFeatures:
+                - feature: pci.device
+                  matchExpressions:
+                    class: { op: InRegexp, value: ["^03"] }
+                    vendor: { op: In, value: ["10de"] }
           usb:
             deviceClassWhitelist: ["08"]
             deviceLabelFields: ["class", "vendor", "device"]
