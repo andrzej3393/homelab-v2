@@ -29,7 +29,7 @@ spec:
     worker:
       config:
         core:
-          sources: ["custom", "pci", "usb"]
+          sources: ["custom", "pci", "usb", "system"]
         sources:
           usb:
             deviceClassWhitelist: ["08"]
