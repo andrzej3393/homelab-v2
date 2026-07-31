@@ -1,9 +1,9 @@
 ---
-apiVersion: source.toolkit.fluxcd.io/v1beta2
+apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
   name: searxng
   namespace: flux-system
 spec:
   interval: 1h
-  url: https://charts.searxng.org
+  url: https://charts.kubito.dev
