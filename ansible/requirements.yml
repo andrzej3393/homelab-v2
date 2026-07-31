@@ -14,7 +14,7 @@ roles:
 
 collections:
   - name: community.healthchecksio
-    version: "1.5.2"
+    version: "1.5.3"
     type: galaxy
   - name: maxhoesel.proxmox
     version: "7.0.0"
