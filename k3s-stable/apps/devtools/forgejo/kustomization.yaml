@@ -5,7 +5,7 @@ metadata:
   name: forgejo-db
   namespace: flux-system
 spec:
-  path: ./k3s-stable/apps/forgejo/forgejo/db
+  path: ./k3s-stable/apps/devtools/forgejo/db
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -23,7 +23,7 @@ metadata:
   name: forgejo
   namespace: flux-system
 spec:
-  path: ./k3s-stable/apps/forgejo/forgejo/app
+  path: ./k3s-stable/apps/devtools/forgejo/app
   sourceRef:
     kind: GitRepository
     name: flux-system

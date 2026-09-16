@@ -3,7 +3,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: forgejo
-  namespace: forgejo
+  namespace: devtools
 spec:
   interval: 30m
   chart:
@@ -60,7 +60,7 @@ spec:
         APP_NAME: Forgejo
         database:
           DB_TYPE: postgres
-          HOST: forgejo-db-rw.forgejo.svc.cluster.local:5432
+          HOST: forgejo-db-rw.devtools.svc.cluster.local:5432
           SSL_MODE: disable
         server:
           ROOT_URL: "https://forgejo.${HOMELAB_DOMAIN}/"

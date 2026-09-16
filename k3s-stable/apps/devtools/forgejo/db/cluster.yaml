@@ -3,7 +3,7 @@ apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
   name: forgejo-db
-  namespace: forgejo
+  namespace: devtools
 spec:
   imageName: ghcr.io/cloudnative-pg/postgresql:15.7
   instances: 1
