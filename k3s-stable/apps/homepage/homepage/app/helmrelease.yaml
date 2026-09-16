@@ -136,6 +136,10 @@ spec:
               tab: Services
               style: row
               columns: 2
+          - Development:
+              tab: Services
+              style: row
+              columns: 2
           # Management
           - Monitoring:
               tab: Management
