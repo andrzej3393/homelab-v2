@@ -1,0 +1,95 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: forgejo
+  namespace: forgejo
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: forgejo
+      version: 17.1.5
+      sourceRef:
+        kind: HelmRepository
+        name: forgejo
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  uninstall:
+    keepHistory: false
+  values:
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        memory: 1Gi
+
+    persistence:
+      enabled: true
+      storageClass: nfs-ssd
+      size: 20Gi
+      accessModes:
+        - ReadWriteOnce
+
+    ingress:
+      enabled: true
+      className: nginx
+      annotations:
+        external-dns.alpha.kubernetes.io/hostname: "forgejo.${HOMELAB_DOMAIN}"
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/name: "Forgejo"
+        gethomepage.dev/group: "Development"
+        gethomepage.dev/icon: "forgejo"
+      hosts:
+        - host: "forgejo.${HOMELAB_DOMAIN}"
+          paths:
+            - path: /
+              pathType: Prefix
+              port: http
+
+    gitea:
+      admin:
+        passwordMode: initialOnlyRequireReset
+      config:
+        APP_NAME: Forgejo
+        database:
+          DB_TYPE: postgres
+          HOST: forgejo-db-rw.forgejo.svc.cluster.local:5432
+          SSL_MODE: disable
+        server:
+          ROOT_URL: "https://forgejo.${HOMELAB_DOMAIN}/"
+          DOMAIN: "forgejo.${HOMELAB_DOMAIN}"
+          DISABLE_SSH: true
+        service:
+          DISABLE_REGISTRATION: true
+          DEFAULT_USER_VISIBILITY: private
+        session:
+          PROVIDER: db
+        cache:
+          ADAPTER: memory
+        queue:
+          TYPE: level
+        indexer:
+          REPO_INDEXER_ENABLED: true
+      additionalConfigFromEnvs:
+        - name: FORGEJO__DATABASE__NAME
+          valueFrom:
+            secretKeyRef:
+              name: forgejo-db-app
+              key: dbname
+        - name: FORGEJO__DATABASE__USER
+          valueFrom:
+            secretKeyRef:
+              name: forgejo-db-app
+              key: username
+        - name: FORGEJO__DATABASE__PASSWD
+          valueFrom:
+            secretKeyRef:
+              name: forgejo-db-app
+              key: password
