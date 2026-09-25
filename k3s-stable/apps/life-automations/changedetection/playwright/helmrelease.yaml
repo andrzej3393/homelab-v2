@@ -28,7 +28,7 @@ spec:
           main:
             image:
               repository: docker.io/dgtlmoon/sockpuppetbrowser
-              tag: "latest@sha256:f166a963b550c29af465c2fac518212e7e3a75f14f0d2b840cf4b79677295764"
+              tag: "latest@sha256:1d8f72d2ce2085faed4232e5ae1e65c02efe5b831a18e127829b267c260b4fb2"
             securityContext:
               capabilities:
                 add: ["SYS_ADMIN"]
