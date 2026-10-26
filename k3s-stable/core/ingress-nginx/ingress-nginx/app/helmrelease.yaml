@@ -15,6 +15,8 @@ spec:
         name: ingress-nginx
         namespace: flux-system
   values:
+    tcp:
+      "2222": "devtools/forgejo-ssh:22"
     controller:
       extraArgs:
         default-ssl-certificate: "ingress-nginx/homelab-tls"

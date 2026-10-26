@@ -65,7 +65,8 @@ spec:
         server:
           ROOT_URL: "https://forgejo.${HOMELAB_DOMAIN}/"
           DOMAIN: "forgejo.${HOMELAB_DOMAIN}"
-          DISABLE_SSH: true
+          DISABLE_SSH: false
+          SSH_PORT: 2222
         service:
           DISABLE_REGISTRATION: true
           DEFAULT_USER_VISIBILITY: private
