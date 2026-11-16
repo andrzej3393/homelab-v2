@@ -8,7 +8,9 @@
     "renovate"
   ],
   "assigneesFromCodeOwners": true,
-  "dependencyDashboard": true,
+  "dependencyDashboard": {
+    "enabled": true
+  },
   "minimumReleaseAge": "3 days",
   "helm-values": {
     "managerFilePatterns": [
